@@ -1,0 +1,81 @@
+{% load static %} {% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        {% include 'utils/steps.html' %}
+        <form action="" method="post" hx-swap="innerHTML" hx-indicator = "#spinner" hx-target="#MDI"
+        {% if nextDisabled %} hx-post="{% url 'entry:studentStrengthAdd' %}"
+        hx-push-url="{% url 'entry:studentStrengthAdd' %}"
+        {% endif %}>
+          {% csrf_token %}
+          <div class="form-group row">
+
+          <div class="col-md-12 mt-3">
+            {{form.classID|as_crispy_field}}
+          </div>
+          <div class="col-md-3">
+            {{form.boys|as_crispy_field}}
+          </div>
+          <div class="col-md-3">
+            {{form.girls|as_crispy_field}}
+          </div>
+          <!--end-->
+          </div>
+        
+          <div class="col-md-12 px-0 ">
+          <button class="btn btn-outline-primary mr-2">
+  
+          <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          Save
+          </button>
+          
+          {% if prevRecord %}  
+          <button type="button" class="btn btn-outline-primary mr-2"
+          hx-post="{% url 'entry:StudentStrengthSavePrev' %}"
+          >
+  
+          <span class="spinner-border spinner-border-sm spanner-indicator"
+          hx-swap="innerHTML" hx-indicator = "#spinner" hx-target="#MDI"
+          id="spinner" role="status" aria-hidden="true"></span>
+            Save as Prev
+          </button>
+          {% endif %}
+          </div>
+
+          {% comment %} <div class="col-md-12 px-0 mt-4 text-center">
+            <div>
+              <!-- Prev Button -->
+              <button class="btn btn-sm btn-outline-secondary btn-icon mr-2"
+              hx-get="{% url 'entry:staffAvalibilityAdd' %}"
+                hx-target="#MDI"
+                hx-push-url="{% url 'entry:staffAvalibilityAdd' %}"
+              
+              >
+                <i class="fa-regular fa-circle-left"></i>
+              </button>
+              <!-- Next Button -->
+              <button class="btn btn-sm btn-outline-info btn-icon"
+              hx-get="{% url 'entry:ptcInformationAdd' %}"
+              hx-target="#MDI"
+              hx-push-url="{% url 'entry:ptcInformationAdd' %}"
+              {% if nextDisabled %} disabled {% endif %}
+              >
+                <i class="fa-regular fa-circle-right"></i>
+              </button>
+            </div>
+          </div> {% endcomment %}
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+{% include 'utils/acceptOnlyNumbers.html' %}

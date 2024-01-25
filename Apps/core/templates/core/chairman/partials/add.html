@@ -1,0 +1,72 @@
+{% load static %} {% load crispy_forms_tags %}
+{% load project_Tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      {% if request.user.is_superuser %}
+      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+      {% endif %}
+
+      {% if request.user|hasPerm:'core.view_chairman' %}
+        <li class="breadcrumb-item">
+        
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'core:chairmanList' %}" hx-get="{% url 'core:chairmanList' %}">Chairman List</a>
+        
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Chairman Add</li>
+    </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="form-group row">
+            <div class="col-md-6">{{form.name| as_crispy_field}}</div>
+            <div class="col-md-6">{{form.contact| as_crispy_field}}</div>
+          </div>
+
+          {% if request.user|hasPerm:'core.add_chairman' or request.user|hasPerm:'core.change_chairman'  %}
+          <button
+            class="btn btn-outline-primary mr-2"
+            {% if not isUpdate %}
+              {% if request.user|hasPerm:'core.add_chairman' %}
+                  hx-post="{% url 'core:chairmanAdd' %}"
+              {% endif %}
+            {% else %}
+                {% if request.user|hasPerm:'core.change_chairman' %}
+                  hx-post="{{object.get_absolute_url}}"
+                {% endif %}
+            {% endif %}
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            
+            hx-indicator = "#spinner"
+          
+            >
+
+            <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          
+         Save
+            
+          </button>
+          {% endif %}
+
+          {% if request.user|hasPerm:'core.view_chairman' %}
+          <button  class="btn btn-outline-danger"  hx-target="#MDI" hx-push-url="{% url 'core:chairmanList' %}" hx-get="{% url 'core:chairmanList' %}">Go Back</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+

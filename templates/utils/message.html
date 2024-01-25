@@ -1,0 +1,26 @@
+{% if messages %}
+    
+    {% for message in messages %}
+      <script>
+          var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          
+          Toast.fire({
+            icon: '{{message.tags}}',
+            title: '{{message}}'
+          })
+      </script>
+    {% endfor %}
+  
+{% endif %}
+
+<script>
+  history.pushState(null, null, location.href);
+    window.onpopstate = function (event) {
+      history.go(1);
+    };
+</script>

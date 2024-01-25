@@ -1,0 +1,69 @@
+.dim {
+
+  cursor: progress;
+  opacity: 50%;
+
+}
+
+.preloader-container{
+
+  position: fixed;
+  display: none;
+ 
+  
+}
+
+.htmx-request .preloader-container{
+  display: block;
+}
+
+
+.htmx-request.preloader-container{
+  display: block;
+}
+
+
+.preloader {
+  position: absolute;;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #f1f1f1; /* Light gray background color */
+  z-index: 9999;
+
+  
+}
+
+.preloader-inner {
+  height: 100%;
+  width: 100%;
+  background-color: #4285F4; /* Google blue color */
+  animation: progress 2s infinite;
+  transform-origin: center;
+}
+
+@keyframes progress {
+  0% {
+    width: 100%;
+    transform: scaleX(1);
+  }
+  50% {
+    width: 0%;
+    transform: scaleX(0);
+  }
+  100% {
+    width: 100%;
+    transform: scaleX(1);
+  }
+}
+
+/* Content Styles */
+.content {
+  /* Adjust padding or margin as needed to avoid overlap */
+  padding-top: 50px;
+}
+
+
+
+

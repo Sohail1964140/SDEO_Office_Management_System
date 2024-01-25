@@ -1,0 +1,234 @@
+{% load static %}{% load project_Tags %} {% include "utils/message.html" %}
+
+<nav class="page-breadcrumb d-flex justify-content-between">
+  <ol class="breadcrumb">
+    {% if request.user.is_superuser %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+    {% endif %}
+    <li class="breadcrumb-item active" aria-current="page">Sotck Items List</li>
+  </ol>
+ 
+</nav>
+
+<div class="row" hx-indicator="#preloader-indicator">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Sotck Items</h4>
+
+        <!-- Search and Add Options -->
+        <div class="row d-flex justify-content-between">
+          <!-- search options-->
+            <div class="col-sm-4">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text py-1 btn btn-primary "   hx-vals="js:{'query': get_search_val()}"  hx-get="{% url 'core:stockItemSearch' %}"   hx-target="#tableMDI"   id="btnGroupAddon2">
+                   
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  </div>
+                </div>
+                <input type="search" class="form-control maxlen"  id="search" maxlength="60" placeholder="Search" aria-controls="dataTableExample">
+
+              <select name="categoryDD" id="categoryDD">
+                <option value=""  selected>----</option>
+                {% for category in categorys %}  
+                <option value="{{category.pk}}">{{category.name}}</option>
+                {% endfor %}
+              </select>
+              </div>
+            
+              
+            </div>
+
+            <!-- add btn-->
+            {% if request.user|hasPerm:'core.add_stock_item' %}
+              <div class="col-sm-3 d-flex justify-content-end">
+                  <button type="button"  class="btn btn-outline-success btn-icon " hx-target="#MDI" hx-push-url="{% url 'core:stockItemAdd' %}" hx-get="{% url 'core:stockItemAdd' %}">
+                      <img  src="{% static 'assets/svgicon/add.svg' %}" alt="" id="add-btn-icon">
+                  </button>
+              </div>
+            {% endif %}
+
+        </div>
+        <div>
+        
+        <div id="tableMDI">
+
+          {% block table %}
+            <!-- Table -->
+            <div class="table-responsive pt-3">
+            
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for item in items%}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td class="font-weight-bold">
+
+                            {% if forloop.counter|divisibleby:2 %}
+                            <span class="avatar bg-success rounded-pill p-2">
+                            {% else %}
+                              
+                                {% if forloop.counter|divisibleby:3 %}
+                                  <span class="avatar bg-warning rounded-pill p-2">
+                                    {% else %}
+                                    <span class="avatar bg-danger rounded-pill p-2">
+
+
+                                {% endif %}
+                            
+                              
+                            {% endif %}
+                             
+                              {{item.name|slice:'2'|capfirst}}
+                            </span>
+                           
+                          </td>
+                          <td>{{item.name}}</td>
+                          <td>{{item.category}}</td>
+                          <td>
+                            {% if request.user|hasPerm:'core.change_stock_item' %}
+                              <button type="button"  hx-target="#MDI" hx-push-url="{% url 'core:stockItemUpdate' item.name %}" hx-get="{% url 'core:stockItemUpdate' item.name %}" class="btn btn-outline-primary btn-icon ">
+                                <img src="{% static 'assets/svgicon/edit.svg' %}" alt="" class="edit">
+                              </button>
+                              {% endif %}
+                              {% if request.user|hasPerm:'core.delete_stock_item' %}
+                              <button type="button"  hx-target="#MDI" hx-push-url="{% url 'core:stockItemDelete' item.name %}" hx-get="{% url 'core:stockItemDelete' item.name %}" class="btn btn-outline-danger btn-icon  ">
+                                <img src="{% static 'assets/svgicon/trash.svg' %}" alt="" class="trash">
+                              </button>
+                              {% endif %}
+                          </td>
+                        </tr>
+                        {% empty %}
+
+                          <tr class="odd"><td valign="top" colspan="6" class="dataTables_empty text-center">No  records found</td></tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if not isSearch %}
+              <div class="row d-flex justify-content-end mt-2">
+                  <nav aria-label="Page navigation example">
+                      <ul class="pagination mb-0 pagination-rounded">
+                      
+                      
+                        {% if  page_obj.has_previous %}
+                          <li class="page-item ">
+                            <a class="page-link "  href="#"  hx-push-url="{% url 'core:stockItemList' %}?page={{page_obj.previous_page_number }}" hx-get="{% url 'core:stockItemList' %}?page={{page_obj.previous_page_number }}" hx-target="#MDI" hx-swap="innerHTML" tabindex="-1" aria-disabled="true">Previous</a>
+                          </li>
+                          {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link " href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                          </li>
+                        {% endif %}
+                        
+                        
+                        {% for page in page_obj.paginator %}
+
+
+                          {% if page.number < 5 and  page_obj.number < 5 %}
+                            
+                            <li class="page-item   {% if page.number == page_obj.number %} active {% endif %} ">
+                              <a class="page-link "  href="#"  hx-push-url="{% url 'core:stockItemList' %}?page={{page.number}}" hx-get="{% url 'core:stockItemList' %}?page={{page.number}}" hx-target="#MDI" hx-swap="innerHTML">{{page.number }}</a>
+                            </li> 
+                          {% endif %}
+                          
+
+                          {% if page.number >= 5 and page.number == page_obj.number %}
+                            
+                          <li class="page-item ">
+                            <a class="page-link " href="#"  hx-push-url="{% url 'core:stockItemList' %}?page=1" hx-get="{% url 'core:stockItemList' %}?page={{1}}" hx-target="#MDI" hx-swap="innerHTML">1</a>
+                          </li>
+
+                            <li class="page-item disabled">
+                              <a class="page-link " href="#">...</a>
+                            </li>
+                            
+                            <li class="page-item ">
+                              <a class="page-link " href="#"  hx-push-url="{% url 'core:stockItemList' %}?page={{page.number}}" hx-get="{% url 'core:stockItemList' %}?page={{page_obj.number|add:-1}}" hx-target="#MDI" hx-swap="innerHTML">{{page_obj.number|add:-1 }}</a>
+                            </li>
+                            
+                            <li class="page-item {% if page.number == page_obj.number %} active {% endif %} ">
+                              <a class="page-link " href="#"  hx-push-url="{% url 'core:stockItemList' %}?page={{page.number}}" hx-get="{% url 'core:stockItemList' %}?page={{page.number}}" hx-target="#MDI" hx-swap="innerHTML">{{page.number }}</a>
+                            </li>
+                            
+                          {% if page_obj.number < page_obj.paginator.num_pages %}
+                            <li class="page-item">
+                              <a class="page-link " href="#"  hx-push-url="{% url 'core:stockItemList' %}?page={{page.number}}" hx-get="{% url 'core:stockItemList' %}?page={{page_obj.number|add:1}}" hx-target="#MDI" hx-swap="innerHTML">{{page_obj.number|add:1 }}</a>
+                            </li>
+                          {% endif %}
+                            
+                          
+                          {% endif %}
+                          
+                          
+                          {% if forloop.last and  page.number != page_obj.number and page_obj.number|add:1 < page_obj.paginator.num_pages %}
+                            <li class="page-item disabled">
+                              <a class="page-link" href="#">...</a>
+                            </li>
+                            
+                              <li class="page-item">
+                                <a class="page-link "  href="#" hx-push-url="{% url 'core:stockItemList' %}?page={{page.number}}" hx-get="{% url 'core:stockItemList' %}?page={{page.number}}" hx-target="#MDI" hx-swap="innerHTML">{{page.number }}</a>
+                              </li>
+                          {% endif %}
+                          
+                            
+                        {% endfor %}
+                          
+                        
+                        
+                        {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link "  href="#" hx-target="#MDI" hx-push-url="{% url 'core:stockItemList' %}?page={{page_obj.next_page_number}}" hx-get="{% url 'core:stockItemList' %}?page={{page_obj.next_page_number}}">Next</a>
+                          </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                              <a class="page-link" href="#">Next</a>
+                            </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+              </div>
+            {% else %}
+              {% include "core/stock_item/partials/search_pagination.html" %}
+            {% endif %}
+
+            {% include "utils/list_icons.html" %}
+          {% endblock table %}
+     
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  
+  function get_search_val(){
+
+    let search = document.getElementById('search').value
+    let category = document.getElementById('categoryDD').value
+    
+    return {'category':category, 'search':search}
+  
+  }
+
+
+  
+</script>
+

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+{% load project_Tags %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <style type="text/css">
+      *{
+        margin:0pt;
+        padding:0pt;
+        margin-top:0pt;
+        margin-bottom: 0pt;
+        margin-left: 0pt;
+        margin-right: 0pt;
+      }
+     body{
+      color: green;
+      font-family: "Poppins";
+     }
+     
+    
+     @page {
+      size: a4 landscape;
+      @frame header_frame {           /* Static Frame */
+          -pdf-frame-content: header_content;
+          left: 25pt; width: 297mm; top: 20pt; 
+          margin-right: 50pt;
+          display: none;
+      }
+      @frame content_frame {          /* Content Frame */
+          left: 25pt; width: 297mm; top: 72pt; height: 210mm;
+          margin-right: 50pt;
+      }
+
+  }
+
+  @page page2{
+
+    @frame content_frame {          /* Content Frame */
+      left: 25pt; width: 297mm; top: 25pt; height: 210mm;
+      margin-right: 50pt;
+  }
+  }
+
+
+
+/* Header Sytle*/
+.p, .blank-item{
+  font-weight:500;
+  color: rgb(24, 93, 64);
+  font-size: 10px;
+  
+}
+.blank{
+  color: black;
+  text-decoration: underline;
+  font-size: 8px;
+}
+/* Content Style */
+
+.content{
+  border:0.5pt solid green;
+  text-align: center;
+  color:  rgb(24, 93, 64);
+}
+
+.h1{
+  font-size: 23px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color:rgb(10, 54, 39);
+  
+}
+
+.h3{
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(24, 93, 64);
+
+}
+
+.text-center{
+  text-align: center;
+}
+
+.border{
+  border: .5pt solid rgb(24, 93, 64);
+}
+.thead td{
+ padding: 3px;
+ font-weight: 700;
+}
+.tbody td{
+  padding-top: 3px;
+  text-align: center;
+  vertical-align: middle;
+  color: black;
+}
+tfoot tr td{
+  padding-top: 3px;
+  color:  rgb(24, 93, 64);
+}
+
+.caption{
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(24, 93, 64)
+}
+.certificate-text{
+  padding: 30px;
+}
+.certificate-header{
+  
+}
+
+  </style>
+    <head>
+<body>
+  <body>
+    
+    <div id="header_content">
+     <table>
+      <tr>
+        <!--Left-->
+        <td style="width: 50%;">
+          <table>
+            <tr>
+              <td style="width: 20%;">image</td>
+              <td>
+                <div class="left-text">
+                  <span class="h1">
+                    SWAT EDUCATION DEPARTMENT
+                  </span>
+                  <br>
+                  <span class="p">
+                    Department of Elementary & Secodary Education, Swat
+                  </span>
+                  <br>
+                  <span class="p">
+                   Govt, of Khyber PakhtunKhwa. Tel: 0946-9240209 - 9240228
+                  </span>
+
+                  <br>
+                  <span class="h3" style="margin-top: 10pt">
+                   MONTHLY RETURN PROFORMA FOR CIRCLE MATTA
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <!--Right-->
+        <td style="width: 50%">
+          <table>
+            <tr>
+              <td style="width:50%">
+               <table>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:20%">
+                    GPS/GMPS:
+                  </td>
+                  <td class="blank" >
+                    {{record.school.name}}
+                  </td>
+                  <!--Item-->
+                  <td>
+                    UC:
+                  </td>
+                  <td class="blank">
+                    {{record.school.uc.name}}
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:50%">
+                    Month:
+                  </td>
+                  <td class="blank" style="width:50%">
+                    {{record.date|date}}
+                  </td>
+                  <!--Item-->
+                  <td >
+                    EMIS:
+                  </td>
+                  <td class="blank">
+                    {{record.school.emis}}
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:30%">
+                    MPA Name:
+                  </td>
+                  <td class="blank">
+                    Mehmood Khan
+                  </td>
+                  <!--Item-->
+                  <td style="width:15%">
+                    PK:
+                  </td>
+                  <td class="blank" style="width:15%">
+                    09
+                  </td>
+                  <!--Item-->
+                  <td style="width:15%">
+                    SW:
+                  </td>
+                  <td class="blank"  style="width:15%">
+                    03
+                  </td>
+                </tr>
+               </table>
+              </td>
+              <td style="border:0.5pt solid green; padding-top:5px; padding-left:5px">
+               <table>
+                <tr class="blank-item">
+                  <td>FOR RECORD</td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td>
+                    School File:
+                  </td>
+                  <td class="blank">
+                    
+                  </td>
+                  <!--Item-->
+                  <td>
+                    S#
+                  </td>
+                  <td class="blank">
+                    
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td>
+                    ASDEO Office File:
+                  </td>
+                  <td class="blank">
+                    
+                  </td>
+                  <!--Item-->
+                  <td>
+                    S#:
+                  </td>
+                  <td class="blank">
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:50%">
+                    SDEO Office File:
+                  </td>
+                  <td class="blank" style="width:50%">
+                    
+                  </td>
+                  <!--Item-->
+                  <td style="width:10%">
+                    S#
+                  </td>
+                  <td class="blank" style="width:10%">
+                    
+                  </td>
+                </tr>
+               </table>
+
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+     </table>
+    </div>
+  
+    <div class="content">
+      
+      <table style="font-weight: 700">
+        <tr>
+          <td style="width:2%">#</td>
+          <td>Name</td>
+          <td>F/Name</td>
+          <td style="width:4%">Post</td>
+          <td style="width:3%">BPS</td>
+          <td style="width:5%">Current Pay</td>
+          <td style="width:6%">Date of Birth</td>
+          <td style="width:6%">Date of 1st Appointment</td>
+          <td style="width:7%; padding-top:5px">Date of Taking Over Charge In present School</td>
+          <td style="width:6%">Date of Taking Over Charge On present Post</td>
+          <td style="padding-top:2pt;" >Qualification <br> (Mension the Subject of M.A)
+            <table>
+              <tr style="border-top:0.5pt solid green;">
+                <td style="padding-top:2pt;">Acc</td>
+                <td style="border-left:0.5pt solid green;padding-top:2pt;">proff</td>
+              </tr>
+            </table>
+          </td>
+          <td>CNIC No</td>
+          <td style="width:5%">Personal Number</td>
+          <td style="width:5%">GP Fund Number</td>
+          <td style="width:7%">Mobile Contact Number</td>
+          <td>Residential Village/City</td>
+        </tr>
+      </table>
+
+      {% for record in record.teachersRecords.all %}
+      <table style="color: black;{% if forloop.first %}margin-top: 5px; {% else %} border-top: 0pt; {% endif %}">
+        <tr>
+          <td style="width:2%">{{forloop.counter}}</td>
+          <td>{{record.teacher.name}}</td>
+          <td>{{record.teacher.fname}}</td>
+          <td style="width:4%">{{record.teacher.post.name}}</td>
+          <td style="width:3%">{{record.teacher.post.bps}}</td>
+          <td style="width:5%">{{record.salary}}</td>
+          <td style="width:6%">{{record.teacher.dob}}</td>
+          <td style="width:6%">{{record.teacher.teacherFirstAppointment.dateOfFirstAppointment|date}}</td>
+          <td style="width:7%; ">{{record.dateOfTakingOverChargeInPresentSchool}}</td>
+          <td style="width:6%">{{record.dateOfTakingOverChargeOnPresentPost|date}}</td>
+          <td style="height: 20;" >
+            <table>
+              <tr>
+                <td>
+                  
+                  {% for qual in record.proffessionalQualification.all %}
+                    {{qual.qualification.name}}
+                    {% if not forloop.last %},{% endif %}
+                  {% endfor %}
+                    
+                </td>
+                <td style="border-left:0.5pt solid green; height: 20; padding-top:0pt">
+                  {% for qual in record.AccademicQualification.all %}
+                    {{qual.qualification.name}}
+                    {% if not forloop.last %},{% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>{{record.teacher.cnic}}</td>
+          <td style="width:5%">{{record.teacher.personal_no}}</td>
+          <td style="width:5%">{{record.teacher.g_fund_no}}</td>
+          <td style="width:7%">{{record.teacher.contacts.all.first.contact}}</td>
+          <td>{{record.teacher.address}}</td>
+        </tr>
+      </table>
+      {% endfor %}
+
+    </div>
+    <pdf:nextpage name="page2" />
+    
+    <div class="text-center" style="color:rgb(24, 93, 64)">
+      <table>
+        <tr>
+          <!--PTC information-->
+          <td style="width: 33%">
+            <span style="width: 100%" class="caption text-center">PTC information</span>
+            <table class="text-center border">
+              <tr class="thead">
+                <td style="width:5%">S#</td>
+                <td>Particulars</td>
+                <td style="width:33%">Details</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">1</td>
+                <td>PTC Establish date</td>
+                <td style="width:33%">{{ptcInfo.electionDate|date}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">2</td>
+                <td>PTC Election date</td>
+                <td style="width:33%">{{ptcInfo.estiblishDate|date}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">3</td>
+                <td>Name Chairman PTC</td>
+                <td style="width:33%">{{ptcInfo.chairman.name}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">4</td>
+                <td>Chairman Contact No</td>
+                <td style="width:33%">{{ptcInfo.chairman.contact}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">5</td>
+                <td>Bank Name</td>
+                <td style="width:33%">{{ptcInfo.bank.name}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">6</td>
+                <td>Branch/Area/Code No.</td>
+                <td style="width:33%">{{ptcInfo.areaCode}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">8</td>
+                <td>Account No.</td>
+                <td style="width:33%">{{ptcInfo.accountNo}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">9</td>
+                <td>Last Year Amount</td>
+                <td style="width:33%">{{ptcInfo.lastYearAmount}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">10</td>
+                <td>Consumed</td>
+                <td style="width:33%">{{ptcInfo.consumed}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">11</td>
+                <td>Balance(if any)</td>
+                <td style="width:33%">{{ptcInfo.prevRemainingBalance}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">12</td>
+                <td>Current Year Amount</td>
+                <td style="width:33%">{{ptcInfo.currentYearAmount}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">13</td>
+                <td>CRC Allocation</td>
+                <td style="width:33%">{{ptcInfo.crcAllocation}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">14</td>
+                <td>Total Expenditure</td>
+                <td style="width:33%">{{ptcInfo.totalExpenditure}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">15</td>
+                <td>Pitty Repair</td>
+                <td style="width:33%">{{ptcInfo.pittyRepair}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">16</td>
+                <td>Balance (if any)</td>
+                <td style="width:33%">{{ptcInfo.balance}}</td>
+              </tr>
+            </table>
+          </td>
+          <!--Staff Availibility-->
+          <td style="padding-left: 20px; width: 33%">
+            <span style="width: 100%" class="caption text-center">Staff Availibility</span>
+          <table  class="text-center border">
+            <tr class="thead">
+              <td style="width:5%">S#</td>
+              <td>Posts</td>
+              <td>Sactioned</td>
+              <td>Filled</td>
+              <td>Vacant/Surplus</td>
+            </tr>
+            
+            {% for staff in record.staffs.all  %}
+            <tr class="tbody">
+              <td style="width:5%">{{forloop.counter}}</td>
+              <td>{{staff.post}}</td>
+              <td>{{staff.sanctioned}}</td>
+              <td>{{staff.filled}}</td>
+              <td>{{staff.surplus}}</td>
+            </tr>
+            {% endfor %}
+
+          </table>
+          </td>
+
+            <!--Student Strength-->
+            <td style="padding-left: 20px; width: 33%">
+              <span style="width: 100%" class="caption text-center">Student Strength</span>
+            <table  class="text-center border">
+              <tr class="thead">
+                <td style="width:5%">S#</td>
+                <td>Class</td>
+                <td>Boys</td>
+                <td>Girls</td>
+                <td>Total</td>
+              </tr>
+              {% for strength in record.studentStrength.all  %}
+              <tr class="tbody">
+                <td style="width:5%">{{forloop.counter}}</td>
+                <td>{{strength.classID|get_class_name}}</td>
+                <td>{{strength.boys}}</td>
+                <td>{{strength.girls}}</td>
+                <td>{{strength.total_in_class}}</td>
+              </tr>
+              {% endfor  %}
+              <tfoot>
+                <tr>
+                  <td colspan="2" style="font-weight: 700">Grand Total</td>
+                  <td style="color:black;">{{record.studentStrength.all.first.total_boys}}</td>
+                  <td style="color:black;">{{record.studentStrength.all.first.total_girls}}</td>
+                  <td style="color:black;">{{record.studentStrength.all.first.total}}</td>
+                </tr>
+              </tfoot>
+            </table>
+            </td>
+          <!--END-->
+        </tr>
+
+        <tr>
+          <!--School Building-->
+          <td style="width: 33%; padding-top: 10px; ">
+            <span style="width: 100%" class="caption text-center">School Building</span>
+            <table class="text-center border">
+              <tr class="thead">
+                <td style="width:5%">S#</td>
+                <td>Particulars</td>
+                <td style="width:33%">Details</td>
+              </tr>
+              
+              
+              <tr class="tbody">
+                <td style="width:5%">1</td>
+                <td>Year of Construction</td>
+                <td style="width:33%">{{record.building.first.yearOfConstruction|date}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">2</td>
+                <td>DDO Code No</td>
+                <td style="width:33%">{{record.school.ddo}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">3</td>
+                <td>Total Area</td>
+                <td style="width:33%">{{record.building.first.coverdArea|add:record.building.first.uncoverdArea}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">4</td>
+                <td>Covered Area</td>
+                <td style="width:33%">{{record.building.first.coverdArea}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">5</td>
+                <td>Uncovered Area</td>
+                <td style="width:33%">{{record.building.first.uncoverdArea}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">6</td>
+                <td>No of Classrooms</td>
+                <td style="width:33%">{{record.building.first.noOfClassRooms}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">7</td>
+                <td>No of Other Rooms</td>
+                <td style="width:33%">{{record.building.first.noOfOtherRooms}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">8</td>
+                <td>Science Laboratory</td>
+                <td style="width:33%">{{record.building.first.scienceLaboratoryYesNo|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">9</td>
+                <td>Computer Laboratory</td>
+                <td style="width:33%">{{record.building.first.computerLaboratory|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">10</td>
+                <td>No of Toilets</td>
+                <td style="width:33%">{{record.building.first.noOfToilets}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">11</td>
+                <td>Playground</td>
+                <td style="width:33%">{{record.building.first.playGroud|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">12</td>
+                <td>Boundary Wall</td>
+                <td style="width:33%">{{record.building.first.boundryWall|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">13</td>
+                <td>Dringking Water Source</td>
+                <td style="width:33%">{{record.building.first.waterSource|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">14</td>
+                <td>Electric Supply</td>
+                <td style="width:33%">{{record.building.first.electricSuply|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">15</td>
+                <td>Internal Electrification</td>
+                <td style="width:33%">{{record.building.first.internalElectrification|YesNo}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">16</td>
+                <td>Fruity Trees</td>
+                <td style="width:33%">{{record.building.first.fruitTrees}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">17</td>
+                <td>Shady Trees</td>
+                <td style="width:33%">{{record.building.first.shadyTrees}}</td>
+              </tr>
+            </table>
+          </td>
+          <!--School Stock-->
+          <td style="padding-left: 20px; width: 33%">
+           <table>
+            <tr>
+              <td>
+                <span style="width: 100%" class="caption text-center">School Stock</span>
+                <table  class="text-center border">
+                  <tr class="thead">
+                    <td style="width:5%">S#</td>
+                    <td>Item</td>
+                    <td style="width:15%">No</td>
+                    <td style="width:15%">Required</td>
+                    <td style="width:15%">Surplus</td>
+                  </tr>
+                  
+                  {% for stock in record.stock.all  %}
+                  <tr class="tbody">
+                    <td style="width:5%">1</td>
+                    <td>{{stock.item.name}}</td>
+                    <td>{{stock.noOfItems}}</td>
+                    <td>{{stock.required}}</td>
+                    <td>{{stock.surplus}}</td>
+                  </tr>
+                  {% endfor %}
+          
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <!--NEAR BY SCHOOLS-->
+              <td style="padding-top:10px;">
+                <span style="width: 100%" class="caption text-center">NEAR BY SCHOOLS</span>
+                <table  class="text-center border">
+                  <tr class="thead">
+                    <td style="width:5%">S#</td>
+                    <td>School Name</td>
+                    <td style="width:15%">KM</td>
+                  </tr>
+                  <tr class="tbody">
+                    <td style="width:5%">4</td>
+                    <td>GPS Jurbandai</td>
+                    <td style="width: 10%">1km</td>
+                  </tr>
+          
+                </table>
+              </td>
+            </tr>
+           </table>
+          </td>
+          <!--Certificate-->
+          <td style=" padding-left:10px" >
+            <div class="border">
+              <table>
+                <tr style="border:0pt;">
+                  <td class="certificate-text" style="width: 100%;" colspan="4">
+                    <span class="certificate-header caption">CERTIFICATE</span> <br>
+                    <span class="p text-center">
+                      Certified That all the entreis made/recorded
+                      in this form are correct in all respect and the 
+                      udersigned will be responsible for any 
+                      wrong information
+                    </span>
+                  </td>
+                </tr>
+                <tr style="border:0pt;">
+                  <!-- One Row -->
+                  <td style="width: 30%">
+                    Name
+                  </td>
+                  <td style="width: 40%"></td>
+                  
+                  <td style="width: 35%">
+                    Signature
+                  </td>
+                  <td style="width:35%">
+                    <span style="width:100%;"></span>
+                  </td>
+                </tr>
+                <tr style="border:0pt;">
+                  <!-- One Row -->
+                  <td style="width: 30%">
+                    Designation
+                  </td>
+                  <td style="width: 40%"></td>
+                  
+                  <td style="width: 35%">
+                    Office Sea
+                  </td>
+                  <td style="width:35%; margin-right:2px">
+                    <span style="width:100%;"></span>
+                  </td>
+                </tr>
+               
+              </table>
+            </div>
+          </td>
+
+           
+          <!--END-->
+        </tr>
+      </table>
+    </div>
+
+
+
+</body>
+</html>

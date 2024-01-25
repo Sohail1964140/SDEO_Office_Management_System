@@ -1,0 +1,158 @@
+{% load static %} {% include "utils/message.html" %}
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+    </li>
+    <li class="breadcrumb-item"><a href="#"
+      hx-get="{% url 'entry:getFilterTemplate' %}" hx-push-url="{% url 'entry:getFilterTemplate' %}" hx-target="#MDI"
+      >Filter Records</a></li>
+  </li>
+    <li class="breadcrumb-item active" aria-current="page">Add</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Monthly Return Proforma</h4>
+
+        <form 
+        action=""
+        method="post"
+        hx-post="{% url 'entry:setting' %}"
+        hx-indicator="#spinner"
+        enctype="multipart/form-data"
+        hx-target="#MDI"
+        hx-confirm="Please select the date carefully. Are you sure to submit the form?"
+         >
+          {% csrf_token %}
+          <div class="manual mb-4">
+           <!-- Input Controls -->
+            <div class="form-grout row my-3">
+              <div class="col-md-6">
+                <label for="#date">Emis</label>
+                <input
+                  type="text"
+                  class="form-control maxlen"
+                  maxlength="7"
+                  name="emis"
+                  id="emis"
+                  placeholder="enter emis code"
+                  list="emisList"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="date">Date</label>
+                <div class="input-group date datepicker">
+                  <input
+                    type="text"
+                    name="date"
+                    id="date"
+                    class="form-control"
+                    
+                  />
+                  <span class="input-group-addon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                  </span>
+                </div>
+              </div>
+            
+            </div>
+            <!--Check Button-->
+            <div class="form-check form-check-inline ">
+              <label class="form-check-label">
+                <input type="checkbox" name="isCsv" class="form-check-input" id="checkBoxCsv" />
+                I have a csv file
+                <i class="input-frame"></i>
+              </label>
+
+            </div>
+          <!--File Upload-->
+            <div class="csv mt-2">
+              <div class="input-group col-xs-12">
+                <input type="file" name="datafile" class="form-control d-none "  id="csvFileInput">
+              </div>
+            </div>
+            
+            
+             <!--Next Button-->
+            <button
+              class="btn btn-outline-primary mr-2 mt-3"
+              id="btnNext"
+              type="submit"
+              
+            >
+              <span
+                class="spinner-border spinner-border-sm spanner-indicator"
+                id="spinner"
+                role="status"
+                aria-hidden="true"
+              ></span>
+
+              Next
+              <i class="fa-solid fa-person-running"></i>
+            </button>
+          <!--Sumbit Button-->
+            <button
+            class="btn btn-outline-primary mr-2 mt-3 d-none"
+            type="submit"
+            id="btnSubmit"
+           
+          >
+            <span
+              class="spinner-border spinner-border-sm spanner-indicator"
+              id="spinner"
+              role="status"
+              aria-hidden="true"
+            ></span>
+
+            Submit
+            
+          </button>
+
+          </div>
+
+
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %} 
+{% include 'utils/acceptOnlyNumbers.html' %}
+{% include 'utils/dateWithMaxIsCurrent.html' %}
+
+<datalist id="emisList">
+  {% for emis in emiss %}
+  <option value="{{emis}}">{% endfor %}</option>
+</datalist>
+
+
+
+
+<script>
+
+  document.getElementById("checkBoxCsv").addEventListener('change', (event)=>{
+  
+    if(event.target.checked){
+
+      document.getElementById("btnNext").classList.add("d-none");
+      document.getElementById("btnSubmit").classList.remove("d-none");
+      document.getElementById("csvFileInput").classList.remove("d-none")
+   
+    }else{
+      
+      document.getElementById("btnNext").classList.remove("d-none");
+      document.getElementById("btnSubmit").classList.add("d-none");
+      document.getElementById("csvFileInput").classList.add("d-none")
+    
+    }
+ 
+  })
+
+</script>
+

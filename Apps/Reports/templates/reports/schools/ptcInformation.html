@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+{% load project_Tags %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <style type="text/css">
+      *{
+        margin:0pt;
+        padding:0pt;
+        margin-top:0pt;
+        margin-bottom: 0pt;
+        margin-left: 0pt;
+        margin-right: 0pt;
+      }
+      
+     body{
+      color: black;
+      font-family: "Poppins";
+     }
+     
+    
+     @page {
+        {% if size > 6 %}
+          size: a4 landscape;
+        {% else %}
+          size: a4 portrait;
+        {% endif %}
+
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 25pt; width: 100%; top: 25pt;
+            margin-right: 25pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 25pt; width: 100%; top: 95pt; height: 632pt;
+           margin-right: 25pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 25pt; width: 100%;  height: 15pt;
+            {% if size > 6 %}
+            top: 570pt;
+            {% else %}
+            top: 810pt;
+            {% endif %}
+            margin-right: 25pt;
+        }
+    }
+    .h1{
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color:rgb(10, 54, 39);
+        text-align:center;
+      }
+      
+      .h3{
+        font-size: 17px;
+        font-weight: 700;
+        color: rgb(24, 93, 64);
+      
+      }
+      .p{
+        font-weight:500;
+        color: rgb(24, 93, 64);
+        font-size: 10px;
+        
+      }
+      .thead td{
+        padding: 3px;
+        font-weight: 800;
+        color:rgb(10, 54, 39);
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+       }
+       .thead{
+        border: .5pt solid rgb(24, 93, 64);
+       }
+       .tbody td{
+        padding-top: 3px;
+        text-align: center;
+        vertical-align: middle;
+        color: black;
+        border: .5pt solid rgb(24, 93, 64);
+      }
+      .content table tr{
+        border-bottom:.5pt solid rgb(24, 93, 64);
+        
+        border-right:.5pt solid rgb(24, 93, 64);
+      }
+
+  </style>
+    <head>
+<body>
+
+    <body>
+        <!-- Content for Static Frame 'header_frame' -->
+    <div id="header_content">
+     <table>
+      <tr style="width:100%;">
+        <!--Left-->
+        <td style="width: 60%;">
+          <table>
+            <tr>
+              <td style="width: 20%;">image</td>
+              <td>
+                <div class="left-text">
+                  <span class="h1">
+                    SWAT EDUCATION DEPARTMENT
+                  </span>
+                  <br>
+                  <span class="p">
+                    Department of Elementary & Secodary Education, Swat
+                  </span>
+                  <br>
+                  <span class="p">
+                   Govt, of Khyber PakhtunKhwa. Tel: 0946-9240209 - 9240228
+                  </span>
+
+                  <br>
+                  <span class="h3" style="margin-top: 10pt">
+                   MONTHLY PTC INFORMATION REPORT
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <!--Right-->
+        <td style="width: 40%">
+          <table>
+            <tr>
+              <td style="width:100%">
+               <table>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:20%">
+                    GPS/GMPS:
+                  </td>
+                  <td class="blank" >
+                    {{record.school.name}}
+                  </td>
+                  <!--Item-->
+                  <td>
+                    UC:
+                  </td>
+                  <td class="blank">
+                    {{record.school.uc.name}}
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:50%">
+                    Month:
+                  </td>
+                  <td class="blank" style="width:50%">
+                    {{record.date|date}}
+                  </td>
+                  <!--Item-->
+                  <td >
+                    EMIS:
+                  </td>
+                  <td class="blank">
+                    {{record.school.emis}}
+                  </td>
+                </tr>
+                <tr class="blank-item">
+                  <!--Item-->
+                  <td style="width:30%">
+                    MPA Name:
+                  </td>
+                  <td class="blank">
+                    Mehmood Khan
+                  </td>
+                  <!--Item-->
+                  <td style="width:15%">
+                    PK:
+                  </td>
+                  <td class="blank" style="width:15%">
+                    09
+                  </td>
+                  <!--Item-->
+                  <td style="width:15%">
+                    SW:
+                  </td>
+                  <td class="blank"  style="width:15%">
+                    03
+                  </td>
+                </tr>
+               </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+     </table>
+    </div>
+    
+        <div id="footer_content" style="color:rgb(10, 54, 39);"> 
+          Signature ___________________
+        </div>
+    
+        <div class="content">
+            <table class="text-center border">
+              <tr class="thead">
+                <td style="width:5%">S#</td>
+                <td>Particulars</td>
+                <td style="width:33%">Details</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">1</td>
+                <td>PTC Establish date</td>
+                <td style="width:33%">{{ptcInfo.electionDate|date}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">2</td>
+                <td>PTC Election date</td>
+                <td style="width:33%">{{ptcInfo.estiblishDate|date}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">3</td>
+                <td>Name Chairman PTC</td>
+                <td style="width:33%">{{ptcInfo.chairman.name}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">4</td>
+                <td>Chairman Contact No</td>
+                <td style="width:33%">{{ptcInfo.chairman.contact}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">5</td>
+                <td>Bank Name</td>
+                <td style="width:33%">{{ptcInfo.bank.name}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">6</td>
+                <td>Branch/Area/Code No.</td>
+                <td style="width:33%">{{ptcInfo.areaCode}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">8</td>
+                <td>Account No.</td>
+                <td style="width:33%">{{ptcInfo.accountNo}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">9</td>
+                <td>Last Year Amount</td>
+                <td style="width:33%">{{ptcInfo.lastYearAmount}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">10</td>
+                <td>Consumed</td>
+                <td style="width:33%">{{ptcInfo.consumed}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">11</td>
+                <td>Balance(if any)</td>
+                <td style="width:33%">{{ptcInfo.prevRemainingBalance}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">12</td>
+                <td>Current Year Amount</td>
+                <td style="width:33%">{{ptcInfo.currentYearAmount}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">13</td>
+                <td>CRC Allocation</td>
+                <td style="width:33%">{{ptcInfo.crcAllocation}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">14</td>
+                <td>Total Expenditure</td>
+                <td style="width:33%">{{ptcInfo.totalExpenditure}}</td>
+              </tr>
+              <tr class="tbody">
+                <td style="width:5%">15</td>
+                <td>Pitty Repair</td>
+                <td style="width:33%">{{ptcInfo.pittyRepair}}</td>
+              </tr>
+
+              <tr class="tbody">
+                <td style="width:5%">16</td>
+                <td>Balance (if any)</td>
+                <td style="width:33%">{{ptcInfo.balance}}</td>
+              </tr>
+            </table>
+        </div>
+
+    </body>
+</html>

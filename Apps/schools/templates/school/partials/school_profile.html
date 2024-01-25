@@ -1,0 +1,506 @@
+{% load static %} {% load crispy_forms_tags %}
+{% load project_Tags %}
+
+
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="profile-page tx-13">
+            <div class="row">
+              <div class="col-12 grid-margin">
+                              <div class="profile-header">
+                                  <div class="cover">
+                                      <div class="gray-shade"></div>
+                                      <figure>
+                                          <img src="{% static 'assets/images/cropped_image.png' %}" class="img-fluid" alt="profile cover">
+                                      </figure>
+                                      <div class="cover-body d-flex justify-content-between align-items-center">
+                                          <div>
+                                              <img class="img-fluid rounded"  width="150px"  height="150px"   {% if school.user.image %} src="{{school.user.image.url}}" {% else %} {% endif %} alt="profile">
+                                              <span class="profile-name">{{school.user}}</span>
+                                          </div>
+                                          <div class="d-none d-md-block">
+                                              <button class="btn btn-primary btn-icon-text btn-edit-profile" data-toggle="modal" data-target="#addRecordModel">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                                  Add Record
+                                                </button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="header-links">
+                                    <h4>{{school.name|title}}</h4>
+                                  </div>
+                  </div>
+              </div>
+            </div>
+            {% if messages %}
+  
+  {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Success</strong> {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+    
+{% endif %}
+            <div class="row profile-body">
+                <!-- left wrapper start -->
+                <div class="d-none d-md-block col-md-4 col-xl-3 left-wrapper">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="card-title mb-0">School Information</h6>
+
+                            </div>
+                            <div class="mt-3">
+                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">Name</label>
+                                <p class="text-muted">{{school.name|title}}</p>
+                            </div>
+                            <div class="mt-3">
+                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">Emis Code</label>
+                                <p class="text-muted">{{school.emis}}</p>
+                            </div>
+                            <div class="mt-3">
+                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">Email:</label>
+                                <p class="text-muted">{{school.user.email}}</p>
+                            </div>
+                            <div class="mt-3">
+                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">UNION COUNCIL</label>
+                                <p class="text-muted">{{school.uc.name}}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- left wrapper end -->
+                <!-- middle wrapper start -->
+                <div class="col-md-8 col-xl-9 middle-wrapper">
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
+                            <div class="card rounded">
+                                <div class="card-body" id="map" style="height:275px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- middle wrapper end -->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Staff</h6>
+            <div class="owl-carousel owl-theme owl-auto-play">
+   
+                {% for teacher in school.teachers.all %}
+                    <div class="item" style="position: relative;">
+                        <img src="{{teacher.image.url}}" alt="item-image" width="300px" height="200px">
+                        <span class="bg-gradient-primary text-center p-1 text-body mb-2 " style="position: absolute; bottom:0; left:50%; transform:translateX(-50%)">{{teacher.name}}</span>
+                    </div>
+                {% endfor %}
+
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row inbox-wrapper">
+    <!--Some style for this -->
+    <style>
+      .current-month{
+        background-color:rgb(23, 31, 60);
+        color:rgb(85, 124, 233) !important;
+      }
+    </style>
+    
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div
+                class="col-lg-3 email-aside border-lg-right"
+                id="scroll"
+                style="position: relative; max-height: 400px"
+              >
+                <div class="aside-content">
+                  <div class="aside-header">
+                    <button
+                      class="navbar-toggle"
+                      data-target=".aside-nav"
+                      data-toggle="collapse"
+                      type="button"
+
+                    >
+                      <span class="icon"
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="feather feather-chevron-down"
+                        >
+                          <polyline points="6 9 12 15 18 9"></polyline></svg></span></button ><span class="title">School Name</span>
+                    <p class="description">{{school.user.email}}</p>
+                  </div>
+    
+                  <div class="aside-nav collapse pt-3">
+                    
+                    <ul class="nav nav-pills nav-stacked">
+                    {% if monthSearch %}
+                    <li class="active mb-2">
+                      <a
+                        data-toggle="collapse"
+                        href="#"
+                      >
+                        <span class="icon">
+                           </span
+                        >{{records.first.date.month|get_month_from_number}}<span
+                          class="badge badge-danger-muted text-white font-weight-bold float-right"
+                          >{{records.first.date|date}}</span
+                        ></a
+                      >
+                    </li>
+                    {% else %}
+                   
+      
+    
+                    <!-- year loop -->
+                    {% for year, month in dates.items %}
+                      <li class="active mb-2">
+                        <a
+                          data-toggle="collapse"
+                          href="#collapse-{{year}}"
+                          role="button"
+                          aria-expanded="false"
+                          aria-controls="collapse-{{year}}"
+                        >
+                          <span class="icon">
+                            <i data-feather="inbox"></i> </span
+                          >{{year}}<span
+                            class="badge badge-danger-muted text-white font-weight-bold float-right"
+                            >{{year|slice:"-2:"}}</span
+                          ></a
+                        >
+                      </li>
+    
+                      <div class="collapse w-100" id="collapse-{{year}}">
+                        {% for m in month %}
+                        {%  get_record_id recordList year m  as id %}  
+ 
+                        <li class="month-item">
+                          <a href="#" hx-target="#emailList" hx-indicator="#sp-{{year}}-{{m}}"   hx-get="{% url 'school:getRecord' id  %}"> {{m|get_month_from_number}} 
+                            <span class="spinner-border spinner-border-sm  text-primary spanner-indicator ml-auto" role="status" id="sp-{{year}}-{{m}}" aria-hidden="true"></span>  
+                          </a>
+                          
+                        </li>
+                        
+                        {% endfor %}
+                      </div>
+                      {% endfor %}
+                      {% endif %}
+    
+                    </ul>
+                  
+                  </div>
+
+                  
+                </div>
+            </div>
+              <div class="col-lg-9 email-content">
+                <div class="email-inbox-header">
+                  <div class="row align-items-center">
+                    <div class="col-lg-12 d-flex justify-content-between">
+                      <div class="email-title mb-2 mb-md-0">
+                        <span class="icon"
+                          ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></span>
+                        CIRCLE MATTA
+                        <span class="new-messages">(Monthly Return Proforma)</span>
+                      </div>
+                      <div class="options" id="options">
+                        <div class="dropdown mb-2">
+                          <button class="btn p-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal icon-lg text-muted pb-3px"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                            <a class="dropdown-item d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                            <a class="dropdown-item d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download icon-sm mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <span class="">Download In PDF</span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="email-list" id="emailList">
+                  {% block email %}
+                  {% if monthSearch %}
+                  <!-- Teachers -->
+                  {% if records.first.teachersRecords.all%}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" >
+                        <span><i class="fa-solid fa-person-chalkboard"></i></span
+                      ></a>
+                    </div>
+                    <span 
+                    class="email-list-detail">
+                      <div>
+                        <span class="from">Teachers Record</span>
+                        <p class="msg">
+                          Teacher information in this month
+                        </p>
+                      </div>
+                      
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" href="{% url 'reports:getTeacherReport' records.first.pk %}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                  </span>
+                  </div>
+                  {% endif %} 
+                  <!-- School Building-->
+                  {% if records.first.building %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" 
+                        ><span>
+                          <i class="fa-solid fa-school"></i> </span
+                      ></a>
+                    </div>
+                    <span
+                    class="email-list-detail">
+                      <div>
+                        <span class="from"> Building Record</span>
+                        <p class="msg">
+                          All Informtion about the school builing in this month
+                        </p>
+                      </div>
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" target="_blank" href="{% url 'reports:getBuildingReport' records.first.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    </span>
+                  </div>
+                  {% endif %}
+                  
+                  <!-- Staff Avalibility-->
+                  {% if records.first.staffs.all %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" >
+                        <span>
+                          <i class="fa-solid fa-people-group"></i> </span
+                      ></a>
+                    </div>
+                    <span
+                    
+                    class="email-list-detail">
+                      <div>
+                        <span class="from"> Staff Avalibility</span>
+                        <p class="msg">
+                          Information about the avalible staff in this month
+                        </p>
+                      </div>
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" href="{% url 'reports:getStaffReport' records.first.pk  %}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    
+                    </span>
+                  </div>
+                  {% endif %}
+                  <!-- Student Strength-->
+                  
+                  {% if records.first.studentStrength.all %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" 
+    
+                        ><span> <i class="fa-solid fa-hand-fist"></i></span
+                      ></a>
+                    </div>
+                    <span
+                   
+                    class="email-list-detail">
+                      <div>
+                        <span class="from"> Student Strength</span>
+                        <p class="msg">
+                          Number of boys and girls in particular class in the given
+                          date
+                        </p>
+                      </div>
+                      
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" target="_blank" href="{% url 'reports:getStudentStrengthReport' records.first.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    
+                    </span>
+                  </div>
+                  {% endif %}
+                  
+                  <!-- School Stock-->
+                  {% if records.first.stock.all %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" 
+                        ><span>
+                          <i class="fa-solid fa-cubes-stacked"></i> </span
+                      ></a>
+                    </div>
+                    <span
+                   
+                    class="email-list-detail">
+                      <div>
+                        <span class="from">School Stock</span>
+                        <p class="msg">
+                          All the information about the school furnatrue in the
+                          given month
+                        </p>
+                      </div>
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" href="{% url 'reports:getStockReport' records.first.pk  %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    </span>
+                  </div>
+                  {% endif %}
+
+               <!-- School Stock-->
+                  {% if records.first.ptcInfo.all %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" 
+                        ><span>
+                          <i class="fa-solid fa-cubes-stacked"></i> </span
+                      ></a>
+                    </div>
+                    <span
+                   
+                    class="email-list-detail">
+                      <div>
+                        <span class="from">PTC INFORMATION</span>
+                        <p class="msg">
+                          this all about the school Ptc Information
+                        </p>
+                      </div>
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" target="_blank"  href="{% url 'reports:getPtcInformationReport' records.first.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    
+                    </span>
+                  </div>
+                  {% endif %}
+
+
+    
+      <!-- Check if entry for this month is done or not -->
+                  
+                  {% if records.first|isMonthEmpty %}
+                  <div class="email-list-item">
+                  <div class="email-list-actions">
+                    <a class="favorite active" 
+                      ><span>
+                        <i class="fa-solid fa-circle-info"></i> </span
+                    ></a>
+                  </div>
+                  <span  class="email-list-detail">
+                    <div>
+                      <span class="from">Info</span>
+                      <p class="msg">
+                        No Recod for this month
+                      </p>
+                    </div>
+                      <span class="date pt-2"> {{records.first.date|timesince}} </span>
+                      <a class=" d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer icon-sm mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> <span class="">Print</span></a>
+                    
+                  </span>
+                  </div>  
+                  {% endif %}
+                  <!--Delete Button-->
+                  {% if records.first.pk %}
+                  <div class="row mt-5" id="id_{{records.first.pk}}">
+                    <div class="col-12 text-right">
+                      <button class="btn btn-danger" 
+                      hx-target="#MDI2"
+                      hx-get="{% url 'entry:deleteRecordFromClient' records.first.pk %}"
+                      hx-confirm="Please confirm whether you want to delete the record. This action cannot be undone."
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  {% endif %}
+    
+                  {% else %}
+                  <div class="email-list-item">
+                    <div class="email-list-actions">
+                      <a class="favorite active" 
+                        ><span>
+                          <i class="fa-solid fa-circle-info"></i> </span
+                      ></a>
+                    </div>
+                    <a class="email-list-detail">
+                      <div>
+                        <span class="from">Info</span>
+                        <p class="msg">
+                         Please select Month to show records
+                        </p>
+                      </div>
+                      <span class="date"></span>
+                    </a>
+                  </div>     
+                  {% endif %}
+    
+                  {% endblock email %}
+                  <!--end-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+   <!-- Modal -->
+   <div class="modal fade" id="addRecordModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRecordModelLabel">Add Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <form action="" method="get" hx-get="{% url 'school:addRecord' school.pk %}" hx-target="#msgBox">
+          
+          <div class="form-group">
+            <div class="col-lg-12">
+              <label for="#date">Date</label>
+              <div class="input-group date datepicker" id="datePickerExample">
+                <input type="text" class="form-control" name="date"><span class="input-group-addon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="msgBox">
+  
+</div>

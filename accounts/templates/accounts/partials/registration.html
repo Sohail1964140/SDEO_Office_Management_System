@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+{% include 'utils/message.html' %}
+
+
+
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    {% if request.user.is_superuser %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+    {% endif %}
+
+    
+    <li class="breadcrumb-item">
+      <a
+        href="#"
+        hx-target="#MDI"
+        hx-push-url="{% url 'accounts:userList' %}"
+        hx-get="{% url 'accounts:userList' %}"
+        >Users List</a
+      >
+    </li>
+    
+
+    <li class="breadcrumb-item active" aria-current="page">User Add</li>
+  </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Create new user</h6>
+          <form action="" method="post" hx-target="#MDI"  hx-post="{% url 'accounts:signup' %}">
+            {% csrf_token %}
+            {{form|crispy}}
+
+            <div class="form-group text-right">
+            <input type="submit" class="btn btn-outline-primary"  value="Submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% include 'utils/maxlen.html' %}
+{% include 'utils/inputmask.html' %}

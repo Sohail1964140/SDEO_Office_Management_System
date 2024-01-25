@@ -1,0 +1,42 @@
+{% load crispy_forms_tags %} {% load static %} 
+
+<form
+  action=""
+  method="post"
+  hx-target="this"
+  hx-post="{% url 'teacher:proffQ' %}"
+>
+  {% if not isList %} {% csrf_token %}
+  <div class="form-group row">
+    <div class="col-md-6">{{proffForm.name|as_crispy_field}}</div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <button type="submit" class="btn btn-sm btn-icon btn-outline-primary mr-2">
+      <strong>✔</strong>
+      </button>
+      <button
+        type="button"
+        hx-delete="{% url 'teacher:deleteForm' %}"
+        class="btn btn-sm btn-icon btn-outline-danger mr-2"
+      >
+        <strong>X</strong>
+      </button>
+    </div>
+  </div>
+  {%else%}
+  <div class="form-group row">
+    <div class="col-md-6">{{pQ.name}}</div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <button
+        type="button"
+        hx-confirm="Are you sure you want to delete  {{pQ.name}} Qualification? This action cannot be undone "
+        hx-delete="{% url 'teacher:proffQDelete' pQ.id %}"
+        class="btn btn-sm btn-icon btn-outline-danger mr-2"
+      >
+      <strong>X</strong>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</form>
+{% include "utils/maxlen.html" %}
+

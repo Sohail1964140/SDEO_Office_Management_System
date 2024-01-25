@@ -1,0 +1,48 @@
+{% load static %} {% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+     
+      <div class="card-body">
+        {% include 'utils/steps.html' %}
+
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="col-md-12 px-0 text-center my-5 ">
+          <button class="btn btn-outline-primary mr-2 "
+           {% if  isSubmited %} disabled {%endif%}
+           hx-post="{% url 'entry:teacherMonthlyAdd' %}"
+           hx-target="#MDI"
+           hx-indicator = "#spinner" >
+  
+          <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          {{btnText}}
+          </button>
+          </div>
+
+          <div class="col-md-12 px-0 mt-4 text-center">
+            <div>
+
+              <button class="btn btn-sm btn-outline-info btn-icon" hx-get="{% url 'entry:buildingAdd' %}"
+              hx-target="#MDI"
+              {% if not isSubmited %} disabled {%endif%}
+              hx-push-url="{% url 'entry:buildingAdd' %}">
+                <i class="fa-regular fa-circle-right"></i>
+              </button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+{% include 'utils/acceptOnlyNumbers.html' %}

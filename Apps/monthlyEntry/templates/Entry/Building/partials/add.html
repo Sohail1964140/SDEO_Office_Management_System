@@ -1,0 +1,358 @@
+{% load static %} {% load crispy_forms_tags %} 
+{% include "utils/message.html"%}
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        {% include 'utils/steps.html' %}
+
+        <form action="" method="post" hx-target="#MDI" hx-swap="innerHTML" hx-indicator="#spinner" 
+        {% if nextDisabled %} hx-post="{% url 'entry:buildingAdd' %}"
+        hx-push-url="{% url 'entry:buildingAdd' %}"
+        {% endif %}>
+          {% csrf_token %}
+          <div id="formMDI">
+          {% block form %}
+          <div class="form-group row">
+
+            <div class="col-md-12 my-2">
+              <label for="{{form.date.id_for_label}}"
+                >{{form.yearOfConstruction.label}}</label
+              >
+              <div class="input-group date datepicker">
+                {{form.yearOfConstruction}}
+                <span class="input-group-addon">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </span>
+              </div>
+            </div>
+            
+
+            <div class="col-md-6 my-3">{{form.coverdArea|as_crispy_field}}</div>
+            <div class="col-md-6 my-3">
+              {{form.uncoverdArea|as_crispy_field}}
+            </div>
+
+            <div class="col-md-4">
+              {{form.noOfClassRooms|as_crispy_field}}
+            </div>
+            <div class="col-md-4">
+              {{form.noOfOtherRooms|as_crispy_field}}
+            </div>
+            <div class="col-md-4">{{form.noOfToilets|as_crispy_field}}</div>
+            <div class="col-md-6">{{form.fruitTrees|as_crispy_field}}</div>
+            <div class="col-md-6">{{form.shadyTrees|as_crispy_field}}</div>
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2">Play Ground</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="playGroud"
+                    id="id_playGroud" 
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="playGroud"
+                    id="id_playGroud_1"
+                    required
+                    value="False"
+                     />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2">Boundry Wall</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="boundryWall"
+                    id="id_boundryWall" 
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="boundryWall"
+                    id="id_boundryWall_1"
+                    required
+                    value="False"
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2">Water Source</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="waterSource"
+                    id="id_waterSource " 
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="waterSource"
+                    id="id_waterSource_1" 
+                    required
+                    value="False"
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2">Electric Suply</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="electricSuply"
+                    id="id_electricSuply"
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="electricSuply"
+                    id="id_electricSuply_1"
+                    required
+                    value="False"
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2 d-block"
+                >internal Electrification</label
+              >
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="internalElectrification"
+                    id="id_internalElectrification" 
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="internalElectrification"
+                    id="id_internalElectrification_1"
+                    required
+                    value="False"
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2 d-block">Science Laboratory</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="scienceLaboratory"
+                    id="id_scienceLaboratory" 
+                    required
+                    value="True"
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="scienceLaboratory"
+                    id="id_scienceLaboratory_1" 
+                    required
+                    value="False"
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="" class="mt-2 pr-2 d-block">Computer Laboratory</label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="computerLaboratory"
+                    id="id_computerlaboratory" 
+                    value="True"
+                    required
+                    />
+                  Yes
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="computerLaboratory"
+                    id="id_computerlaboratory_1" 
+                    value="False"
+                    required
+                    />
+                  No
+                  <i class="input-frame"></i
+                ></label>
+              </div>
+            </div>
+           <!--Set Radio Buttons -->
+            {% if not  nextDisabled %}
+            <script>
+              
+              {% for item in extra %}
+                
+                {% if item.val == True  %}
+                   document.getElementById('{{item.id}}').checked=true  
+                   {% else%}
+                   document.getElementById("{{item.id}}_1").checked=true
+                {% endif %}
+                  
+                
+              {% endfor %}
+                
+            </script>
+
+          {% endif %}
+          <!-- Important js -->
+          {% include "utils/maxlen.html" %} {% include "utils/inputmask.html" %}
+          {% include 'utils/dateWithMaxIsCurrent.html' %}
+          <script src="{% static 'assets/js/select2.js' %}"></script>
+          {% include 'utils/acceptOnlyNumbers.html' %}
+
+
+          {% endblock form %}
+          </div>
+            <!--end-->
+          </div>
+          <div class="col-md-12 px-0">
+            <div>
+              <button
+              class="btn btn-outline-primary mr-2"
+            type="submit"
+            >
+              <span
+                class="spinner-border spinner-border-sm spanner-indicator"
+                id="spinner"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Submit
+            </button>
+            <!-- Fill Check Box -->
+            {% if prevRecord %}
+            <input type="checkbox" name="prevMonth" value="True"
+            hx-get="{% url 'entry:buildingfill' %}"
+            hx-target="#formMDI"
+            hx-trigger="change"
+            hx-indicator="#preloader-indicator"
+            >
+            {% endif %}
+            </div>
+          </div>
+
+          {% comment %} <div class="col-md-12 px-0 mt-4 text-center">
+            <div>
+              <!-- Prev Button -->
+              <button
+                class="btn btn-sm btn-outline-secondary btn-icon mr-2"
+                hx-get="{% url 'entry:teacherMonthlyAdd' %}"
+                hx-target="#MDI"
+                hx-push-url="{% url 'entry:teacherMonthlyAdd' %}"
+              >
+                <i class="fa-regular fa-circle-left"></i>
+              </button>
+
+              <!-- Next Button -->
+              <button
+                class="btn btn-sm btn-outline-info btn-icon"
+                hx-get="{% url 'entry:staffAvalibilityAdd' %}"
+                hx-target="#MDI"
+                hx-push-url="{% url 'entry:staffAvalibilityAdd' %}"
+                {% if nextDisabled %}
+                disabled
+              {% endif %}
+              >
+                <i class="fa-regular fa-circle-right"></i>
+              </button>
+            </div>
+          </div> {% endcomment %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  

@@ -1,0 +1,489 @@
+{% load static %}
+{% load project_Tags %}
+<nav class="sidebar" hx-indicator="#preloader-indicator">
+
+    <div class="sidebar-header">
+      <a href="{% url 'home' %}" class="sidebar-brand">Omni<span>Office</span> </a>
+      <div class="sidebar-toggler not-active">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="sidebar-body">
+      <ul class="nav">
+        {% if request.user.is_superuser %}
+          <li class="nav-item nav-category">Main</li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link">
+              <i class="link-icon" data-feather="grid"></i>
+              <span class="link-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-category">School Monthly Records</li>
+
+          <li class="nav-item">
+              <a href="" hx-get="{% url 'entry:setting' %}" hx-push-url="{% url 'entry:setting' %}" hx-target="#MDI" hx-swap="innerHTML"   class="nav-link">
+                <i class="link-icon" data-feather="plus-circle"></i>
+                <span class="link-title">Add Records</span>
+              </a>
+            </li>
+
+          <li class="nav-item">
+            <a href="" hx-get="{% url 'entry:getFilterTemplate' %}" hx-push-url="{% url 'entry:getFilterTemplate' %}" hx-target="#MDI" hx-swap="innerHTML"   class="nav-link">
+              <i class="link-icon" data-feather="filter"></i>
+              <span class="link-title">Filter Records</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-category">Reports</li>
+          <li class="nav-item">
+            <a  href="{% url 'reports:reportTemplate' %}"   class="nav-link">
+              <i class="link-icon" data-feather="book"></i>
+              <span class="link-title">Reports</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-category">Managements</li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#emails"
+            role="button"
+            aria-expanded="false"
+            aria-controls="emails"
+          >
+            <i class="link-icon" data-feather="command"></i>
+            <span class="link-title">Circles</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="emails">
+            <ul class="nav sub-menu"  > 
+              {% if request.user|hasPerm:'core.add_circle' %}
+                <li class="nav-item" >
+                  <a href="#" hx-get="{% url 'core:circleAdd' %}" hx-push-url="{% url 'core:circleAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Add Circle</a>
+                </li>
+              {% endif %}
+              {% if request.user|hasPerm:'core.view_circle' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:circleList' %}" hx-push-url="{% url 'core:circleList' %}" hx-target="#MDI" hx-swap="innerHTML" class="nav-link">View Circle</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+        
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#uc"
+            role="button"
+            aria-expanded="false"
+            aria-controls="uc"
+          >
+            <i class="link-icon" data-feather="shield"></i>
+            <span class="link-title">Uc</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="uc">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'core.add_uc' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:ucAdd' %}" hx-push-url="{% url 'core:ucAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Add Uc</a>
+
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'core.view_uc' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:ucList' %}" hx-push-url="{% url 'core:ucList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">View Uc</a>
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#itemCategory"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="trello"></i>
+            <span class="link-title">Item Category </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="itemCategory">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'core.add_item_category' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:itemCategoryAdd' %}" hx-push-url="{% url 'core:itemCategoryAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Item Category Add</a>
+
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'core.view_item_categoryc' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:itemCategoryList' %}" hx-push-url="{% url 'core:itemCategoryList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Item Category List</a>
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#stockItem"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="git-branch"></i>
+            <span class="link-title">Stock Item </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="stockItem">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'core.add_stock_item' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:stockItemAdd' %}" hx-push-url="{% url 'core:stockItemAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Item Add</a>
+
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'core.view_stock_item' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:stockItemList' %}" hx-push-url="{% url 'core:stockItemList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Items  List</a>
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#post"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="package"></i>
+            <span class="link-title">Posts </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="post">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'core.view_post' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:postAdd' %}" hx-push-url="{% url 'core:postAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Post Add</a>
+
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'core.add_post' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:postList' %}" hx-push-url="{% url 'core:postList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Post  List</a>
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#school"
+            role="button"
+            aria-expanded="false"
+            aria-controls="school"
+          >
+            <i class="link-icon" data-feather="home"></i>
+            <span class="link-title">Schools </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="school">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'schools.add_school' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'school:schoolAdd' %}" hx-push-url="{% url 'school:schoolAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">School Add</a>
+
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'schools.view_school' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'school:schoolList' %}" hx-push-url="{% url 'school:schoolList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">School  List</a>
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#teacher"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="users"></i>
+            <span class="link-title">Staff</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="teacher">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'staff.add_teacher' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:teacherAdd' %}" hx-push-url="{% url 'teacher:teacherAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Teacher Add</a>
+      
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'staff.view_teacher' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:teacherList' %}" hx-push-url="{% url 'teacher:teacherList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Teacher  List</a>
+      
+              </li>   
+              {% endif %}   
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#transfer"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="map"></i>
+            <span class="link-title">Transfers </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="transfer">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'staff.add_transfer' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:transferAdd' %}" hx-push-url="{% url 'teacher:transferAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Transfer Add</a>
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'staff.view_transfer' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:transferList' %}" hx-push-url="{% url 'teacher:transferList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Transfer  List</a>
+              </li>  
+              {% endif %}    
+            </ul>
+          </div>
+        </li>
+
+        
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#promotion"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="award"></i>
+            <span class="link-title">Promotions </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="promotion">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'staff.add_promotion' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:promotionAdd' %}" hx-push-url="{% url 'teacher:promotionAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Promotion Add</a>
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'staff.view_promotion' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'teacher:promotionList' %}" hx-push-url="{% url 'teacher:promotionList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Promotion  List</a>
+              </li> 
+              {% endif %}     
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#bank"
+            role="button"
+            aria-expanded="false"
+            aria-controls="bank"
+          >
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Bank </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="bank">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'staff.add_bank' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:bankAdd' %}" hx-push-url="{% url 'core:bankAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Bank Add</a>
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'staff.view_bank' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:bankList' %}" hx-push-url="{% url 'core:bankList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Bank  List</a>
+              </li> 
+              {% endif %}     
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#Chairman"
+            role="button"
+            aria-expanded="false"
+            aria-controls="bank"
+          >
+            <i class="link-icon" data-feather="user"></i>
+            <span class="link-title">Chairman </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="Chairman">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'staff.add_chairman' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:chairmanAdd' %}" hx-push-url="{% url 'core:chairmanAdd' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Chairman Add</a>
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'staff.view_chairman' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'core:chairmanList' %}" hx-push-url="{% url 'core:chairmanList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Chairman  List</a>
+              </li> 
+              {% endif %}     
+            </ul>
+          </div>
+        </li>
+
+                
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#entry"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="plus-circle"></i>
+            <span class="link-title">Monthly Entry </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="entry">
+            <ul class="nav sub-menu">
+              {% if request.user|hasPerm:'entry.add_monthlyrecord' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'entry:setting' %}" hx-push-url="{% url 'entry:setting' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">ADD</a>
+              </li>
+              {% endif %}
+              {% if request.user|hasPerm:'entry.view_monthlyrecord' %}
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'entry:getFilterTemplate' %}" hx-push-url="{% url 'entry:getFilterTemplate' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">Show</a>
+              </li>   
+              {% endif %}   
+            </ul>
+          </div>
+        </li>
+        
+        {% if request.user.is_superuser %}
+          
+          
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="collapse"
+            href="#auth"
+            role="button"
+            aria-expanded="false"
+            aria-controls="teacher"
+          >
+            <i class="link-icon" data-feather="plus-circle"></i>
+            <span class="link-title">Auth</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+          </a>
+          <div class="collapse" id="auth">
+            <ul class="nav sub-menu">
+              
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'accounts:signup' %}" hx-push-url="{% url 'accounts:signup' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">ADD New User</a>
+              </li>
+              
+             
+              <li class="nav-item">
+                <a href="#" hx-get="{% url 'accounts:userList' %}" hx-push-url="{% url 'accounts:userList' %}" hx-target="#MDI" hx-swap="innerHTML"  class="nav-link ">User List</a>
+              </li>   
+             
+            </ul>
+          </div>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </nav>
+  <nav class="settings-sidebar">
+    <div class="sidebar-body">
+      <a href="#" class="settings-sidebar-toggler">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </a>
+      <h6 class="text-muted">Sidebar:</h6>
+      <div class="form-group border-bottom">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight" value="sidebar-light" checked="">
+            Light
+          <i class="input-frame"></i></label>
+        </div>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark" value="sidebar-dark">
+            Dark
+          <i class="input-frame"></i></label>
+        </div>
+      </div>
+      <div class="theme-wrapper">
+        <h6 class="text-muted mb-2">Light Theme:</h6>
+        <a class="theme-item active" href="{% url 'changeToLight' %}">
+          <img src="{% static 'assets/images/screenshots/light.jpg' %}" alt="light theme">
+        </a>
+        <h6 class="text-muted mb-2">Dark Theme:</h6>
+        <a class="theme-item" href="{% url 'changeToDark' %}">
+          <img src="{% static 'assets/images/screenshots/dark.jpg' %}" alt="light theme">
+        </a>
+      </div>
+    </div>
+  </nav>
+  {% comment %} <script>
+    function changeURLWithoutHistory(url) {
+      
+      window.history.pushState({}, '', url);
+    }
+  </script> {% endcomment %}

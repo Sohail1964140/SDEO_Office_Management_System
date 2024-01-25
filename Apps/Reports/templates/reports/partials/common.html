@@ -1,0 +1,509 @@
+{% load static %} {% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Reports</li>
+    </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">All Reports</h6>
+        <div class="row">
+          <div class="col-lg-6 mx-auto d-flex">
+            <!-- Schools Reports -->
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle" type="button" id="schoolReports" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Reports About Schools
+              </button>
+              <div class="dropdown-menu" aria-labelledby="schoolReports">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#schoolRoptions">List of all schools</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#customeSchoolReport">Custome Report</a>
+              </div>
+            </div>
+            <!-- Teacher Reports -->
+            <div class="dropdown ml-2">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="teacherReports" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Reports About Teachers
+              </button>
+              <div class="dropdown-menu" aria-labelledby="teacherReports">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#allTeacher">List of Teachers for Local Govt Election Final</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#CustomeTeacherReport">Custome Report</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+
+
+
+<!-- List of all School Option Model -->
+<!-- Modal -->
+<div class="modal fade" id="schoolRoptions" tabindex="-1" role="dialog" aria-labelledby="schoolRoptions" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Format to download with</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:schoolAll' %}" method="get">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control" placeholder="Report name">
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="format" required>
+              <option value="" selected="" disabled="">Select Format</option >
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Cusotme School Reports -->
+<div class="modal fade" id="customeSchoolReport" tabindex="-1" role="dialog" aria-labelledby="customeSchoolReport" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-top" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customeSchoolReport">Custome Report about the schools</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:schoolAll' %}" method="get">
+          
+          <div class="form-group">
+            <label for="#circle" class="col-form-label">Circle</label>
+            <select hx-get="{% url 'teacher:getUcFromCircle' %}"  hx-target="#ucDD" hx-trigger="change" class="form-control" name="circleDD"  id="circle" required >
+              <option value=""  selected>----</option>
+              {% for circle in circles %}  
+                <option   value="{{circle.pk}}">{{circle.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="#uc" class="col-form-label">UC</label>
+            <select class="form-control" name="ucDD"  id="ucDD">
+              <option value=""  selected>----</option>
+              {% for uc in ucs %}  
+              <option value="{{uc.pk}}">{{uc.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <input type="text" name="custome" id="" hidden value="true">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control mb-2" placeholder="Report name">
+            <select class="form-control" name="format" id="format" required>
+              <option  value="" selected disabled>Select Format</option>
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Teachers Reporst -->
+
+<!-- Modal -->
+<div class="modal fade" id="allTeacher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">List of Teachers for Local Govt Election Final</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:govtElectionList' %}" method="get">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control" placeholder="Report name" required>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="format" required>
+              <option value="" selected="" disabled="">Select Format</option >
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Custome Teachers Reporst -->
+
+<!-- Modal -->
+<div class="modal fade modal fade bd-example-modal-lg" id="CustomeTeacherReport" tabindex="-1" role="dialog" aria-labelledby="CustomeTeacherReportLable" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="CustomeTeacherReportLable">Custome Report For Teachers</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:teacherReport' %}" method="get">
+         
+          <div class="row">
+            <!-- Experience Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="experienceCB" id="experienceCB" value="YearOfExp">
+                      Year Of Experience 
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-3">
+                      <input type="number" name="year" class="form-control" max="50" id="year">
+                    </div>
+                    <div class="col-1">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="eq" value="eq">
+                          eq
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1  ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="gt" value="gt">
+                          gt
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1  ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="lt" value="lt">
+                          lt
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1 ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="gte" value="gte">
+                          gte
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1 ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="lte" value="lte">
+                          lte
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Circle Filter -->
+          <div class="col-lg-6">
+            <div class="form-group">
+              <div class="col-lg-12">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="circleCB" id="circleCB" value="circleCB">
+                    Circle
+                  <i class="input-frame"></i></label>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <select class="select form-select" name="circle" id="circleDD2">
+                  <option value="" selected="">----------</option >
+                  
+                  {% for circle in circles %}
+
+                  <option value="{{circle.pk}}">{{circle}}</option>
+                    
+                  {% endfor %}
+                    
+                
+                </select>
+              </div>
+            </div>
+          </div>
+
+            <!-- UC Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="ucCB" id="ucCB" value="ucCB">
+                      UC
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select" name="uc" id="ucDD2">
+                    <option value="" selected="" >----------</option >
+                      {% for uc in ucs %}
+
+                      <option value="{{uc.pk}}">{{uc}}</option>
+                        
+                      {% endfor %}
+                        
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- School Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="schoolCB" id="schoolCB" value="schoolCB">
+                      School
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select form-control" name="school" id="schoolDD2">
+                    <option value="" selected="" >----------</option >
+                      {% for school in schools %}
+
+                      <option value="{{school.pk}}">{{school}}</option>
+                        
+                      {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Post Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="postCB" id="postCB" value="postCB">
+                      Post
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select" name="post" id="postDD2">
+                    <option value="" selected="">----------</option >
+                      {% for post in posts %}
+
+                      <option value="{{post.pk}}">{{post}}</option>
+                        
+                      {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Sallery Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="sallaryCB" id="sallaryCB" value="sallary">
+                      Sallery
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-6">
+                     <input type="text" name="fromSallery" id="fromSallery" class="form-control salary">
+                    </div>
+                    <div class="col-lg-6">
+                     <input type="text" name="toSallery" id="toSallery" class="form-control salary">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          <!-- Columns -->
+          <div class="col-lg-12">
+          <div class="form-group">
+            <div class="col-lg-12">
+              <label>Select Columns for Report</label>
+            </div>
+            <div class="col-lg-12">
+              <select class="mDD form-control" multiple name="columns[]">
+                <option value="school">School</option>
+                <option value="post">Designation</option>
+                <option value="personal_no">Personal Number</option>
+                <option value="name">Name</option>
+                <option value="fname">F/Name</option>
+                <option value="g_fund_no">GP fund No</option>
+                <option value="cnic">CNIC</option>
+                <option value="address">Address</option>
+                <option value="dob">DOB</option>
+                <option value="gender">Gender</option>
+                <option value="contact">Contact</option>
+                <option value="dateOfTakingOverChargeInPresentSchool">date Of Taking OverCharge In Present School</option>
+                <option value="Proffqualification">Proffissional Qualification</option>
+                <option value="Accadqualification">Accademic Qualification</option>
+                <option value="teacherFirstAppointment">Year of Recruitment</option>
+                <option value="dateOfTakingOverChargeOnPresentPost">date Of Taking OverCharge On Present Post</option>
+                <option value="district">District</option>
+                <option value="tehsil">Tehsil</option>
+                <option value="circle">Circle</option>
+                <option value="uc">UC</option>
+                <option value="emis">Emis Code</option>
+                <option value="level">Level</option>
+              </select>
+            </div>
+          </div>
+          </div>
+           
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+            <div class="form-group">
+             <div class="row">
+              <div class="col-lg-4">
+                <input type="text" name="filename" id="filename2" class="form-control" placeholder="Report Name" required>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="reportHeading" id="reportHeading" class="form-control" placeholder="Report Heading" required>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="reportSubHeading" id="reportSubHeading" class="form-control" placeholder="Sub Heading" required>
+              </div>
+             </div>
+            </div>
+          </div>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <select class="form-control" name="format" required>
+                  <option value="" selected="" disabled="">Select Format</option >
+                  <option value="pdf">pdf</option>
+                  <option value="csv">csv</option>
+                  <option value="xls">xlsx</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!--END-->
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.getElementById("experienceCB").addEventListener('change', (event)=>{
+    if(event.target.checked){
+
+      document.getElementById("year").setAttribute('required','');
+  }else{
+      document.getElementById("year").removeAttribute('required');
+  }
+})
+
+document.getElementById("circleCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("circleDD2").setAttribute('required','');
+}else{
+    document.getElementById("circleDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("ucCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("ucDD2").setAttribute('required','');
+}else{
+    document.getElementById("ucDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("schoolCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("schoolDD2").setAttribute('required','');
+}else{
+    document.getElementById("schoolDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("postCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("postDD2").setAttribute('required','');
+}else{
+    document.getElementById("postDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("sallaryCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    for (input of document.getElementsByClassName("salary")){
+      input.setAttribute('required','')
+    }
+}else{
+  for (input of document.getElementsByClassName("salary")){
+    input.removeAttribute('required','')
+  }
+}
+})
+</script>

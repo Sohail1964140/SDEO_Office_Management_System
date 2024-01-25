@@ -1,0 +1,138 @@
+{% load static %} 
+{% load project_Tags %}
+{% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+<div class="d-none"  id="extra">
+
+</div>
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        {% if request.user.is_supueruser %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        {% endif %}
+
+        {% if request.user|hasPerm:'staff.view_promotion' %}
+        <li class="breadcrumb-item">
+        
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'teacher:promotionList' %}" hx-get="{% url 'teacher:promotionList' %}">Promotions List</a>
+        
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Teacher Transfer</li>
+    </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="form-group row">
+
+            <div class="col-md-12 mb-4">
+              <label for="#personalNo">Personal Number*</label>
+              <input type="search"  list="personlaNoDataList" value="{{personalNo}}"  hx-indicator="#personalNoSpinner"  hx-target="#extra"  hx-trigger="change"  hx-get="{% url 'teacher:checkPersonalNoForPost' %}" 
+               class="form-control maxlen " 
+              name="personalNo"  maxlength="10" 
+               placeholder="Teacher personal No"  
+              id="personalNo"
+              
+              >
+
+              
+              <datalist class="data-list" id="personlaNoDataList">
+                {% for personalNo in personalNos %}
+                   <option value="{{personalNo}}">
+                 {% endfor %}
+              </datalist>
+
+              <span class="text-danger" id="personalError">
+                {{msg}}
+                <span class="spinner-grow text-primary spinner-grow-sm spanner-indicator" id="personalNoSpinner" role="status" aria-hidden="true"></span>
+              </span>
+            </div>
+            <div class="col-md-12 mb-2">
+              <div class="form-check form-check-flat form-check-primary">
+                  <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="PromoteTo16" id="PromoteTo16">
+                  Promote to 16 Scale
+                  <i class="input-frame"></i></label>
+              </div>
+            </div>
+
+            <div class="col-md-6">{{form.toPost| as_crispy_field}}</div>
+            <div class="col-md-6">
+              <label for="{{form.dob.id_for_label}}"
+              >{{form.date.label}}</label
+            >
+            <div class="input-group date datepicker">
+              {{form.date}}<span
+                class="input-group-addon"
+                ><i class="fa-solid fa-calendar-days" style="color: #7886A1;"></i></span>
+            </div>
+
+            </div>
+          </div>
+
+          {% if request.user|hasPerm:'staff.add_promotion' %}
+          <button
+            class="btn btn-outline-primary mr-2"
+            hx-post="{% url 'teacher:promotionAdd' %}"
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            
+            hx-indicator = "#spinner"
+          
+            >
+
+            {% include 'utils/spinner.html' %}
+          
+         Save
+            
+
+            
+          </button>
+          {% endif %}
+
+          {% if request.user|hasPerm:'staff.view_promotion' %}
+          <button  class="btn btn-outline-danger"  hx-target="#MDI" hx-push-url="{% url 'teacher:promotionList' %}" hx-get="{% url 'teacher:promotionList' %}">Go Back</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+
+<script>
+  const numberInput = document.getElementById('personalNo');
+
+
+  numberInput.addEventListener('input', function (event) {
+  
+  let inputValue = event.target.value;
+  inputValue = inputValue.replace(/[^0-9]/g, '');
+  event.target.value = inputValue;
+});
+
+document.getElementById('PromoteTo16').addEventListener('change', (event)=>{
+  
+  if(event.target.checked){
+    document.getElementById('div_id_toPost').classList.add('d-none')
+  }else{
+    document.getElementById('div_id_toPost').classList.remove('d-none')
+    
+  }
+
+})
+
+</script>

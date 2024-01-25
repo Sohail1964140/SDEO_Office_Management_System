@@ -1,0 +1,18 @@
+<script>
+    $(function() {
+        'use strict';
+      
+        if($('.datepicker').length) {
+          var date = new Date();
+          var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          $('.datepicker').datepicker({
+            format: "mm/dd/yyyy",
+            todayHighlight: true,
+            autoclose: true,
+            endDate: new Date(),
+            
+          });
+          $('.datepicker').datepicker('setDate', today);
+        }
+      });
+</script>

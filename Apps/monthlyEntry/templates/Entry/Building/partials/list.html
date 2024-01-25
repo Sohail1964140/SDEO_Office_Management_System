@@ -1,0 +1,142 @@
+{% load static %} {% load crispy_forms_tags %} 
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#"
+        hx-get="{% url 'entry:showRecordsFromSession' %}"
+        hx-target="#MDI"
+        hx-push-url="{% url 'entry:showRecordsFromSession' %}"
+        >show records</a></li>
+      <li class="breadcrumb-item active" aria-current="page">School Building</li>
+    </ol>
+  </nav>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">  
+          <h3 class="title d-flex justify-content-between">
+            {{record.school.name|truncatewords:'2'}}
+            Building Detail
+            <div style="font-size:20px">
+              {{record.date|date}}
+            </div>
+          </h3>
+          <form>
+            <div class="form-group row">
+  
+              <div class="col-md-12 my-2">
+                <div class="form-group">
+                    <label for="">Year of Construction</label>
+                    <input type="text" value="{{record.building.yearOfConstruction}}" class="form-control"  readonly>
+                </div>
+              </div>
+              
+  
+              <div class="col-md-6 my-3">
+                <div class="form-group">
+                    <label for="">Coverd Area</label>
+                    <input type="text" value="{{record.building.coverdArea}}" class="form-control"    readonly>
+                </div>
+              </div>
+              <div class="col-md-6 my-3">
+                <div class="form-group">
+                    <label for="">UnCoverd Area</label>
+                    <input type="text" value="{{record.building.uncoverdArea}}" class="form-control"   readonly>
+                </div>
+              </div>
+  
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">No of Class Rooms</label>
+                    <input type="text" value="{{record.building.noOfClassRooms}}" class="form-control"   readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">No of other Rooms</label>
+                    <input type="text" value="{{record.building.noOfOtherRooms}}" class="form-control"   readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">No of Toilets</label>
+                    <input type="text" value="{{record.building.noOfToilets}}" class="form-control"   readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Fruit Trees</label>
+                    <input type="text" value="{{record.building.fruitTrees}}" class="form-control"    readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Shady  Trees</label>
+                    <input type="text" value="{{record.building.shadyTrees}}" class="form-control"   readonly>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Play Ground</label>
+                    <input type="text" value=" {% if record.building.playGroud == True %} Yes  {% else %} No {% endif %}
+                      " class="form-control"   readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Boundry Wall</label>
+                    <input type="text" value="{% if record.building.boundryWall == True %} Yes  {% else %} No {% endif %}" class="form-control"   readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Water Source</label>
+                    <input type="text" value="{% if record.building.waterSource == True %} Yes  {% else %} No {% endif %}" class="form-control"  readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Electric Suply</label>
+                    <input type="text" value="{% if record.building.electricSuply == True %} Yes  {% else %} No {% endif %}" class="form-control"  readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">internal Electrification</label>
+                    <input type="text" value="{% if record.building.internalElectrification == True %} Yes  {% else %} No {% endif %}" class="form-control"  readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Science Laboratory</label>
+                    <input type="text" value="{% if record.building.scienceLaboratory == True %} Yes  {% else %} No {% endif %}" class="form-control"  readonly>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="mt-2 pr-2 d-block">Computer  Laboratory</label>
+                    <input type="text" value="{% if record.building.computerLaboratory == True %} Yes  {% else %} No {% endif %}" class="form-control"  readonly>
+                </div>
+              </div>
+             
+  
+              <!--end-->
+            </div>
+            <div class="row">
+              <div class="col-12 text-right">
+                <button class="btn btn-danger"
+                hx-delete="{% url 'entry:buildingDelete' record.pk %}"
+                hx-confirm="Please confirm whether you want to delete the record. This action cannot be undone."
+                hx-push-url="{% url 'entry:showRecordsFromSession' %}"
+                hx-target="#MDI"
+                > Delete</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,177 @@
+{% load static %}
+{% include 'utils/message.html' %}
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">filter</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title d-flex justify-content-between">
+          Enter information to filter records
+          <div class="col-xsm-3 d-flex justify-content-end">
+            <button type="button"  class="btn btn-outline-success btn-icon"  hx-get="{% url 'entry:setting' %}" hx-push-url="{% url 'entry:setting' %}" hx-target="#MDI">
+                <img  src="{% static 'assets/svgicon/add.svg' %}" alt="" id="add-btn-icon">
+            </button>
+        </div>
+        </h1>
+
+        <!-- Filter Options -->
+        <div class="row ">
+          <div class="col-md-4 mx-auto">
+            <form action="" method="get"
+            hx-get="{% url 'entry:showRecords' %}"
+            hx-push-url="{% url 'entry:showRecordsFromSession' %}"
+            hx-target="#MDI"
+
+            hx-indicator="#spinner"
+            
+            >
+              <div class="form-group row">
+                <!-- Emis Code -->
+                <div class="col-12">
+                  <label for="#emis">Emis</label>
+                  <input
+                    type="search"
+                    class="form-control maxlen"
+                    maxlength="7"
+                    placeholder="Enter emis code"
+                    name="emis"
+                    id="emis"
+                    required
+                    list="emisList"
+                  />
+                </div>
+
+                <datalist id="emisList">
+                  {% for emis in emiss %}
+                  <option value="{{emis}}">{% endfor %}</option>
+                </datalist>
+
+
+                 <!--Year Check-->
+                <div class="col-12 mt-2 cbYear">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        name="cbYear"
+                        class="form-check-input"
+                        id="cbYear"
+                      />
+                      Year Base Search
+                      <i class="input-frame"></i>
+                    </label>
+                  </div>
+                </div>
+                <!-- Date -->
+                <div class="col-12 mt-2 selectDate">
+                  <label for="date">Date</label>
+                  <div class="input-group date datepicker">
+                    <input
+                      type="text"
+                      name="date"
+                      id="date"
+                      class="form-control"
+                    />
+                    <span class="input-group-addon">
+                      <i class="fa-solid fa-calendar-days"></i>
+                    </span>
+                  </div>
+                </div>
+                <!-- Range Check-->
+                <div class="col-12 mt-2">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        name="cbRange"
+                        class="form-check-input"
+                        id="cbRanage"
+                      />
+                      Range Search
+                      <i class="input-frame"></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mt-2 range d-none">
+                  <label for="date">From</label>
+                  <div class="input-group date datepicker">
+                    <input
+                      type="text"
+                      name="from"
+                      id="from"
+                      class="form-control"
+                    />
+                    <span class="input-group-addon">
+                      <i class="fa-solid fa-calendar-days"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6 mt-2 range d-none">
+                  <label for="date">To</label>
+                  <div class="input-group date datepicker">
+                    <input
+                      type="text"
+                      name="to"
+                      id="to"
+                      class="form-control"
+                    />
+                    <span class="input-group-addon">
+                      <i class="fa-solid fa-calendar-days"></i>
+                    </span>
+                  </div>
+                </div>
+
+                  <!--Other options-->
+                <div class="col-12 mt-4 d-flex">
+               
+                 
+
+                  <button type="submit" class="btn btn-outline-primary btn-icon-text">
+                     Show
+                     <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+                  </button>
+
+                 
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include "utils/list_icons.html" %}
+<script>
+
+  document.getElementById("cbRanage").addEventListener("change", (event)=>{
+
+    if(!document.getElementById("cbRanage").checked){
+
+      Array.from(document.getElementsByClassName("range")).forEach(div=>{
+        div.classList.add("d-none")
+      })
+      document.getElementsByClassName("selectDate")[0].classList.remove("d-none")
+      document.getElementsByClassName("cbYear")[0].classList.remove("d-none")
+
+    }else{
+      Array.from(document.getElementsByClassName("range")).forEach(div=>{
+        div.classList.remove("d-none")
+      })
+
+      document.getElementsByClassName("selectDate")[0].classList.add("d-none")
+      document.getElementsByClassName("cbYear")[0].classList.add("d-none")
+    }
+
+  })
+
+</script>
+
+{% include 'utils/dateWithMaxIsCurrent.html' %}

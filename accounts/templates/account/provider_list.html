@@ -1,0 +1,49 @@
+{% load socialaccount %}
+{% load static %}
+
+<style>
+    .socialbtn{
+        display: flex;
+        padding:.5em;
+        border:1px solid #C2C8D0;
+        align-items:center;
+        justify-content:start;
+        transition:all .03s ease-in-out;
+        margin-top:.5em;
+        
+    }
+    .socialbtn a{
+        text-decoration:none;
+        margin-left:1em;
+        color:black;
+    }
+    .socialbtn:hover{
+        background-color:#E5E5E5;
+    }
+</style>
+
+
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+{% if provider.id == "openid" %}
+{% for brand in provider.get_brands %}
+<div>
+  <a title="{{brand.name}}" 
+     class="socialaccount_provider {{provider.id}} {{brand.id}}" 
+     href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
+     >{{brand.name}}</a>
+</div>
+{% endfor %}
+{% endif %}
+<div class="socialbtn">
+    <img src="{% with 'assets/img/'|add:provider.name|add:'.svg' as image %}
+      {% static image %}
+     {% endwith %}" alt="">
+  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}} " 
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+     Continue with {{provider.name}}
+     </a>
+</div>
+{% endfor %}

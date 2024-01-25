@@ -1,0 +1,83 @@
+{% load static %} {% load crispy_forms_tags %}
+{% load project_Tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      {% if request.user.is_superuser %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        {% endif %}
+
+        {% if request.user|hasPerm:'core.view_stock_item' %}
+        <li class="breadcrumb-item">
+        
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'core:stockItemList' %}" hx-get="{% url 'core:stockItemList' %}">Stock Items</a>
+        
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Stock Item Add</li>
+    </ol>
+</nav>
+
+<div class="row">
+
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                {{form.name|as_crispy_field}}
+              </div>
+            </div><!-- Col -->
+            <div class="col-sm-6">
+              <div class="form-group">
+                {{form.category|as_crispy_field}}
+              </div>
+            </div><!-- Col -->
+          </div>
+
+          {% if request.user|hasPerm:'core.add_stock_item' or  request.user|hasPerm:'core.change_stock_item'  %}
+          <button
+            class="btn btn-outline-primary mr-2"
+            {% if not isUpdate %}
+              {% if request.user|hasPerm:'core.add_stock_item' %}
+                  hx-post="{% url 'core:stockItemAdd' %}"
+              {% endif %}
+            {% else %}
+              {% if request.user|hasPerm:'core.change_stock_item' %}
+                  hx-post="{% url 'core:stockItemUpdate' object.name %}"
+              {% endif %}
+            {% endif %}
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            
+            hx-indicator = "#spinner"
+          
+            >
+
+            {% include "utils/spinner.html" %}      
+                
+         Save
+            
+
+            
+          </button>
+          {% endif %}
+          {% if request.user|hasPerm:'core.view_stock_item' %}
+            <button  class="btn btn-outline-danger"  hx-target="#MDI" hx-push-url="{% url 'core:stockItemList' %}" hx-get="{% url 'core:stockItemList' %}">Go Back</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if request.htmx %}
+{% include "utils/maxlen.html" %}
+{% endif %}

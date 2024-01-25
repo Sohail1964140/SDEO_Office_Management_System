@@ -1,0 +1,96 @@
+{% load static %}
+{% load project_Tags %}
+{% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        {% if request.user.is_superuser %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        {% endif %}
+        {% if request.user|hasPerm:'core.view_post' %}
+        <li class="breadcrumb-item">
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'core:postList' %}" hx-get="{% url 'core:postList' %}">Posts List</a>
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Post Add</li>
+    </ol>
+</nav>
+
+<div class="row">
+
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          
+          
+          {% csrf_token %}
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                {{form.name|as_crispy_field}}
+                {{form.name.errors|striptags}}
+              </div>
+            </div><!-- Col -->
+            <div class="col-sm-6">
+              <div class="form-group">
+                {{form.bps|as_crispy_field}}
+              </div>
+            </div><!-- Col -->
+          </div>
+         
+        <!-- Non Field Errors --> 
+         
+        {% if form.non_field_errors %}
+           
+            {% for error in form.non_field_errors %}
+                    <div class="text-danger mb-2 mt-0" >{{ error }}</div>
+            {% endfor %}
+      
+        {% endif %}
+
+
+        {% if request.user|hasPerm:'core.add_post' or request.user|hasPerm:'core.change_post' %}
+        <button
+            class="btn btn-outline-primary mr-2"
+            {% if not isUpdate %}
+
+              {% if request.user|hasPerm:'core.add_post' %}
+                  hx-post="{% url 'core:postAdd' %}"
+              {% endif %}
+
+            {% else %}
+                {% if request.user|hasPerm:'core.change_post' %} 
+                  hx-post="{% url 'core:postUpdate' object.name object.bps%}"
+                {% endif %}
+            {% endif %}
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            
+            hx-indicator = "#spinner"
+          
+            >
+
+            {% include "utils/spinner.html" %}      
+                
+         Save
+          </button>
+          {% endif %}
+
+          {% if request.user|hasPerm:'core.view_post' %}
+            <button  class="btn btn-outline-success"  hx-target="#MDI" hx-push-url="{% url 'core:postList' %}" hx-get="{% url 'core:postList' %}">Go Back</button>
+          {% endif %}
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if request.htmx %}
+{% include "utils/maxlen.html" %}
+{% endif %}

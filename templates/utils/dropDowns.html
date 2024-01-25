@@ -1,0 +1,13 @@
+{% block ucBlock %}
+    <option value=""  selected>----</option>
+    {% for uc in ucs %}  
+    <option value="{{uc.pk}}">{{uc.name}}</option>
+    {% endfor %}
+{% endblock ucBlock %}
+
+{% block Schoolblock %}
+<option value=""  selected>----</option>
+  {% for school in schools %}  
+    <option value="{{school.pk}}">{{school.name}}</option>
+  {% endfor %}
+{% endblock Schoolblock %}

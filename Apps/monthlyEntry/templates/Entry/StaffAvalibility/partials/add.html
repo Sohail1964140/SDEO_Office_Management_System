@@ -1,0 +1,90 @@
+{% load static %} {% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+<span id="bom"></span>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        {% include 'utils/steps.html' %}
+        <form action="" method="post"  hx-swap="innerHTML" hx-indicator = "#spinner" hx-target="#MDI"
+         {% if nextDisabled %} hx-post="{% url 'entry:staffAvalibilityAdd' %}" 
+         hx-push-url="{% url 'entry:staffAvalibilityAdd' %}"
+         {% endif %}
+         >
+          {% csrf_token %}
+          <div class="form-group row">
+
+          <div class="col-md-12 mt-3">
+            {{form.post|as_crispy_field}}
+          </div>
+  
+
+          <div class="col-md-3 mt-3">
+            {{form.filled|as_crispy_field}}
+          </div>
+          <div class="col-md-3  mt-3">
+            {{form.sanctioned|as_crispy_field}}
+          </div>
+          <div class="col-md-3  mt-3">
+            {{form.surplus|as_crispy_field}}
+          </div>
+          <!--end-->
+          </div>
+        
+          <div class="col-md-12 px-0 ">
+          <button class="btn btn-outline-primary mr-2"
+            type="submit"
+            hx-target="#MDI" >
+  
+          <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          Save
+          </button>
+
+          
+          {% if prevRecord %}
+            <button class="btn btn-outline-primary mr-2"
+              type="button"
+              hx-target="#MDI"
+              hx-post="{% url 'entry:staffAvalibilityAddPrev' %}"
+              >
+    
+            <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+            Save as Prev
+            </button>
+          {% endif %}
+          </div>
+
+          {% comment %} <div class="col-md-12 px-0 mt-4 text-center">
+            <div>
+              <!-- Prev Button -->
+              <button class="btn btn-sm btn-outline-secondary btn-icon mr-2"
+              hx-get="{% url 'entry:buildingAdd' %}"
+                hx-target="#MDI"
+                hx-push-url="{% url 'entry:buildingAdd' %}"
+              
+              >
+                <i class="fa-regular fa-circle-left"></i>
+              </button>
+              <!-- Next Button -->
+              <button class="btn btn-sm btn-outline-info btn-icon"
+              hx-get="{% url 'entry:studentStrengthAdd' %}"
+              hx-target="#MDI"
+              hx-push-url="{% url 'entry:studentStrengthAdd' %}"
+              {% if nextDisabled %} disabled {% endif %}
+              >
+                <i class="fa-regular fa-circle-right"></i>
+              </button>
+            </div>
+          </div> {% endcomment %}
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+{% include 'utils/acceptOnlyNumbers.html' %}

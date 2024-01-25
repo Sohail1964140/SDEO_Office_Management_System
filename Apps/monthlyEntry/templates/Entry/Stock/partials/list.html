@@ -1,0 +1,70 @@
+{% load static %} {% load crispy_forms_tags %} 
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#"
+        hx-get="{% url 'entry:showRecordsFromSession' %}"
+        hx-target="#MDI"
+        hx-push-url="{% url 'entry:showRecordsFromSession' %}"
+        >Show Records</a></li>
+      <li class="breadcrumb-item active" aria-current="page">School Stock</li>
+    </ol>
+  </nav>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">  
+          <h3 class="title d-flex justify-content-between">
+            {{record.school.name|truncatewords:'2'}}
+            Stock Availibility
+            <div style="font-size:20px">
+              {{record.date|date}}
+            </div>
+          </h3>
+          <div class="row mt-5">
+            <div class="col-md-12">
+                      <!-- Table -->
+                      <div class="table-responsive pt-3">
+                      
+                        <table class="table table-hover">
+                          <thead>
+                            <tr class="text-center">
+                              <th>#</th>
+                              <th>Item</th>
+                              <th >No</th>
+                              <th>Required</th>
+                              <th >Surplus</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                            {% for stock in record.stock.all %}
+                             <tr class="text-center">
+                                <td>{{forloop.counter}}</td>
+                                <td>{{stock.item}}</td>
+                                <td >{{stock.noOfItems}}</td>
+                                <td >{{stock.required}}</td>
+                                <td>{{stock.surplus}}</td>
+                             </tr>
+                             {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>            
+                      <!--- END -->
+              </div>
+            </div>
+            <div class="col-12 text-right pr-0 mt-5">
+                <button class="btn btn-danger"
+                hx-delete="{% url 'entry:schoolStockDetelet' record.pk %}"
+                hx-confirm="Please confirm whether you want to delete the record. This action cannot be undone."
+                hx-push-url="{% url 'entry:showRecordsFromSession' %}"
+                hx-target="#MDI"
+                
+                >Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

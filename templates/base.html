@@ -1,0 +1,261 @@
+{% load static %}
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>{% block title %}Sohail Ahmad Final Year Project {% endblock title %}</title>
+      <!-- core:css -->
+      <link rel="stylesheet" href="{% static 'assets/vendors/core/core.css' %}" />
+      <!-- endinject -->
+      <!-- plugin css for this page -->
+
+      <!-- end plugin css for this page -->
+      <!-- inject:css -->
+      <script src="{% static 'assets/js/htmx.min.js' %}"></script>
+      
+      <link rel="stylesheet" href="{% static 'assets/vendors/dropify/dist/dropify.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/vendors/sweetalert2/sweetalert2.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/vendors/select2/select2.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/css/style/steps.css' %}">
+      <!-- Include Leaflet Css -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+      <!--font icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/fonts/feather-font/css/iconfont.css' %}"
+      />
+
+      <!-- endinject -->
+
+    <!--Leflet  map-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+
+      <!-- Layout styles -->
+      {% if request.session.dark %}
+          <link rel="stylesheet" href="{% static 'assets/css/demo_2/style.css' %}" />
+        {% else %}
+        <link rel="stylesheet" href="{% static 'assets/css/demo_1/style.css' %}" />
+
+      {% endif %}
+      <!-- End layout styles -->
+      <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
+      <!-- DropZone  -->
+     
+
+
+    
+          <!-- Sweats alerts -->
+          {% block style %}{% endblock style %}
+          <link rel="stylesheet" href="{% static 'assets/css/style/custome.css' %}">
+      <style>
+
+        #MDI{
+            position: relative;
+            
+        }
+  
+
+        .preloader-container{
+
+          position: relative;
+          display: none;
+
+          
+        }
+
+        .htmx-request .preloader-container{
+          display: block;
+        }
+        
+        
+        .htmx-request.preloader-container{
+          display: block;
+        }
+
+        .htmx-request.preloader-container ~ #MDI::after{
+          content:"";
+          width:100%;
+          height: 100%;
+          position: absolute;
+          top:0;
+          left:0;
+          background-color: gray;
+          opacity: .2;
+          z-index: 999999;
+          background-image: url("{% static 'assets/images/preloader.gif' %}");
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+
+        .preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background-color: #f1f1f1; /* Light gray background color */
+          z-index: 9999;
+        }
+        
+        .preloader-inner {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        
+        .line {
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(to right, #4285F4, #34A853, #FBBC05); /* Google color combination */
+          animation: progress 2s infinite;
+        }
+        
+        @keyframes progress {
+          0%, 100% {
+            transform: translateX(-100%);
+          }
+          50% {
+            transform: translateX(100%);
+          }
+        }
+        
+        /* Adjust the animation duration for the specific color */
+        .line:nth-child(2) {
+          animation-duration: 6s; /* Slower animation for the Google green color */
+        }
+        
+        /* Content Styles */
+        .content {
+          /* Adjust padding or margin as needed to avoid overlap */
+          padding-top: 50px;
+        }
+        
+
+        .spanner-indicator{
+          display:none;
+          transition: opacity 500ms ease-in;
+        }
+
+        .htmx-request .spanner-indicator {
+          display: inline-block;
+        }
+
+        
+        .htmx-request.spanner-indicator{
+          display: inline-block;
+        }
+
+
+      </style>
+          
+    </head>
+
+    <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+      <div class="main-wrapper">
+
+        {% block sidebar %}
+        <!-- partial:partials/_sidebar.html -->
+        {% include "includes/sidebar.html" %}
+
+        {% endblock sidebar %}
+        <!-- partial -->
+
+        <div class="page-wrapper" >
+
+          <!-- Preloader -->
+          <div class="preloader-container" id="preloader-indicator">
+            <div class="preloader">
+              <div class="preloader-inner">
+                <div class="line"></div>
+              </div>
+          </div>
+
+
+
+        <!-- End Preloader -->
+
+        </div>
+          <!-- partial:partials/_navbar.html -->
+          {% include "includes/navbar.html" %}
+          <!-- partial -->
+          <div class="page-content dem"  hx-indicator="#preloader-indicator" id="MDI">
+            
+              {% block content %}
+               {% include 'includes/dashboard.html' %}
+              {% endblock content %}
+          </div>
+        </div>
+      </div>
+
+      <!-- core:js -->
+      <script src="{% static 'assets/vendors/core/core.js' %}"></script>
+      <script src="{% static 'assets/vendors/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+      <script src="{% static 'assets/vendors/inputmask/jquery.inputmask.min.js' %}"></script>
+      <script src="{% static 'assets/vendors/sweetalert2/sweetalert2.min.js' %}"></script>
+      <script src="{% static 'assets/vendors/feather-icons/feather.min.js' %}"></script>
+      <script src="{% static 'assets/js/template.js' %}"></script>
+      <script src="{% static 'assets/js/dashboard.js' %}"></script>
+      <script src="{% static 'assets/vendors/dropify/dist/dropify.min.js ' %}"></script>
+      <script src="{% static 'assets/vendors/select2/select2.min.js ' %}"></script>
+      <script src="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js ' %}"></script>
+     <!--Leflet  Map-->
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+     <script>
+
+      var map = L.map('map').setView([34.923913, 72.415178], 10);
+      var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+      }).addTo(map);
+
+    {% for school in  schools %}
+      var marker = L.marker([{{school.latitude}}, {{school.langitude}}]).addTo(map)
+      marker.bindPopup("{{school.name}}");
+    {% endfor %}
+  
+
+
+    </script>
+
+
+
+
+  {%include "utils/maxlen.html"%}
+  
+	
+  <script src="{% static 'assets/js/dropify.js' %}"></script>
+  <script src="{% static 'assets/js/select2.js' %}"></script>
+  {% block script %}
+  {% include 'utils/dateWithMaxIsCurrent.html' %}
+  {% endblock script %}
+
+  <script>
+    history.pushState(null, null, location.href);
+      window.onpopstate = function (event) {
+        history.go(1);
+      };
+  </script>
+
+
+  
+
+    </body>
+  </html>
+
+  
+
+  

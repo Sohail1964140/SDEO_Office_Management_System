@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Login {% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'assets/css/boot.css' %}">
+</head>
+<style>
+     .form-control {
+    border:1px solid #C2C8D0;
+  }
+  .form-control:focus{
+    box-shadow:none;
+    outline:none;
+    border:1px solid #116853;
+  }
+  .mainbtn{
+    background-color:#0E9272;
+    color:white;
+    font-weight:600;
+    transition:all 0.3s ease-in-out;
+  }
+
+  .mainbtn:hover{
+    background-color:#116853;
+    color:white;
+  }
+  .mainbtn:focus{
+    box-shadow:none;
+  }
+</style>
+<body>
+   {% if messages %}
+      <div class="p-2">
+        {% for message in messages %}
+          <div class="text-center border-bottom">{{message}}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}
+        
+    {% endblock content %}
+</body>
+</html>

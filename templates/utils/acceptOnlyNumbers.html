@@ -1,0 +1,15 @@
+<script>
+
+    Array.from(document.getElementsByClassName("maxlen")).forEach(txt=>{
+
+    txt.addEventListener('input',(event)=>{
+
+        let value = event.target.value;
+      
+        value = value.replace(/[^0-9]/g, '')
+        event.target.value=value;
+    })
+
+
+})
+</script>

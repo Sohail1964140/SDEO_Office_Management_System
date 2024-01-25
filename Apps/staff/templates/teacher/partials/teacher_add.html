@@ -1,0 +1,323 @@
+{% load static %} 
+{% load project_Tags %}
+{% load crispy_forms_tags %} 
+{% include "utils/message.html"%}
+
+<style>
+  .htmx-request .spanner-indicator ~ .add-btn-icon {
+    display: none;
+  }
+
+  .htmx-request.spanner-indicator ~ .add-btn-icon {
+    display: none;
+  }
+</style>
+
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    {% if request.user.is_superuser %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+    {% endif %}
+
+    {% if request.user|hasPerm:'staff.view_teacher' %}
+    <li class="breadcrumb-item">
+      <a
+        href="#"
+        hx-target="#MDI"
+        hx-push-url="{% url 'teacher:teacherList' %}"
+        hx-get="{% url 'teacher:teacherList' %}"
+        >Teacher List</a
+      >
+    </li>
+    {% endif %}
+
+    <li class="breadcrumb-item active" aria-current="page">Teacher Add</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form
+          action="."
+          method="post"
+          hx-target="#MDI"
+          hx-indicator="#spinner"
+          {% if not isUpdate %}
+          {% if request.user|hasPerm:'staff.add_teacher' %}
+            hx-post="{% url 'teacher:teacherAdd' %}"
+            {% endif %}
+            {% else %}
+            {% if request.user|hasPerm:'staff.change_teacher' %}
+              hx-post="{% url 'teacher:teacherUpdate' object.pk %}"
+              
+            {% endif %}
+          {% endif %}
+            
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+
+          <div class="form-group row">
+            {% if isSubmit %}
+            <div class="col-md-12 mb-3">
+              <label class="form-label d-block">Current Profile</label>
+              <a href="{{object.image.url}}" target="_blank">{{object.image}}</a>
+            </div>  
+            {% endif %}
+            <div class="col-md-12">{{form.image| as_crispy_field}}</div>
+            <div class="col-md-6">{{form.school| as_crispy_field}}</div>
+            <div class="col-md-6">{{form.post| as_crispy_field}}</div>
+            <div class="col-md-6 mb-3">
+              {%if not isUpdate  %}
+              <label for="{{form.dateOfTakingOverChargeInPresentSchool.id_for_label}}"
+                >{{form.dateOfTakingOverChargeInPresentSchool.label}} </label >
+              <div class="input-group date datepicker">
+                {{form.dateOfTakingOverChargeInPresentSchool}}<span
+                  class="input-group-addon"
+                  ><i class="fa-solid fa-calendar-days"></i></span>
+              </div>
+              {% else  %}
+              {{form.dateOfTakingOverChargeInPresentSchool|as_crispy_field}}
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              {%if not isUpdate  %}
+              <label for="{{form.dateOfTakingOverChargeOnPresentPost.id_for_label}}"
+                >{{form.dateOfTakingOverChargeOnPresentPost.label}}
+                </label>
+              <div class="input-group date datepicker">
+                {{form.dateOfTakingOverChargeOnPresentPost}}<span
+                  class="input-group-addon"
+                  ><i class="fa-solid fa-calendar-days"></i></span>
+              </div>
+              {% else %}
+              {{form.dateOfTakingOverChargeOnPresentPost|as_crispy_field}}
+              {% endif %}
+            </div>
+            <div class="col-md-12">{{form.name| as_crispy_field}}</div>
+            <div class="col-md-12">{{form.fname| as_crispy_field}}</div>
+            <div class="col-md-4">{{form.gender| as_crispy_field}}</div>
+            <div class="col-md-2">{{form.salary|as_crispy_field}}</div>
+            <div class="col-md-6"></div>
+
+            <div class="col-md-6">{{form.cnic| as_crispy_field}}</div>
+            <div class="col-md-6">
+             {%if not isUpdate  %}
+                  <label for="{{form.dob.id_for_label}}">{{form.dob.label}}</label>
+                  <div class="input-group date datepicker">
+                    {{form.dob}}<span class="input-group-addon"
+                      ><i class="fa-solid fa-calendar-days" ></i></span>
+                  </div>
+              {% else %}
+              {{form.dob|as_crispy_field}}
+             {% endif %}
+            </div>
+
+            <div class="col-md-2">{{form.g_fund_no| as_crispy_field}}</div>
+            <div class="col-md-2">{{form.personal_no| as_crispy_field}}</div>
+            <div class="col-md-8"></div>
+
+            <div class="col-md-12">{{form.address| as_crispy_field}}</div>
+            <div class="col-md-12">Teacher Frist Appointment</div>
+            <div class="col-md-6 mt-4">
+              {{appointmentForm.appointmentPost| as_crispy_field}}
+            </div>
+            <div class="col-md-6 mt-4">
+              {%if not isUpdate  %}
+              <label for="{{form.dob.id_for_label}}">
+                {{appointmentForm.dateOfFirstAppointment.label}}                      
+
+                </label >
+              <div class="input-group date datepicker" id="datePK-firstAppointment">
+                {{appointmentForm.dateOfFirstAppointment}}<span
+                  class="input-group-addon"
+                  ><i class="fa-solid fa-calendar-days"></i></span>
+              </div>
+
+              {% else %}
+              {{appointmentForm.dateOfFirstAppointment|as_crispy_field}}
+              {% endif  %}
+            </div>
+            </div>
+          <div class="text-right mt-2">
+            <button type="submit" class="btn btn-outline-primary mr-2">
+              <span
+                class="spinner-border spinner-border-sm spanner-indicator"
+                id="spinner"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Save
+            </button>
+            <button
+              class="btn btn-outline-danger"
+              hx-target="#MDI"
+              hx-push-url="{% url 'teacher:teacherList' %}"
+              hx-get="{% url 'teacher:teacherList' %}"
+              hx-indicator="#preloader-indicator"
+            >
+              Go Back
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% if isSubmit %}
+{% if request.user|hasPerm:'staff.add_contact' %}
+<div class="row my-4">
+  <div class="col-md-12 stretch-card grid-margin grid-margin-md-0">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title d-flex justify-content-between">
+          Contacts 
+          <button
+            type="button"
+            class="btn btn-outline-success btn-icon mr-2"
+            hx-indicator="#spinnerContact"
+            hx-swap="beforeend"
+            hx-target="#contactContainer"
+            hx-get="{% url 'teacher:contactAdd' %}"
+          >
+            <span
+              class="spinner-border spinner-border-sm spanner-indicator"
+              id="spinnerContact"
+              role="status"
+              aria-hidden="true"
+            ></span>
+
+            <img
+              src="{% static 'assets/svgicon/add.svg' %}"
+              alt=""
+              
+              class="add-btn-icon"
+            />
+          </button>
+        </h6>
+        <div id="contactContainer">
+          
+          {% for contact in contacts %}
+          {% include 'teacher/partials/contact.html' %}
+          {% endfor %}
+            
+        
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if request.user|hasPerm:'staff.add_teacherproffqualification' %}
+<div class="row my-4">
+  <div class="col-md-12 stretch-card grid-margin grid-margin-md-0">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title d-flex justify-content-between">
+          Professional Qualification
+          <button
+            type="button"
+            class="btn btn-outline-success btn-icon  mr-2"
+            hx-indicator="#spinnerProffQ"
+            hx-swap="beforeend"
+            hx-target="#proffQContainer"
+            hx-get="{% url 'teacher:proffQ' %}"
+          >
+            <span
+              class="spinner-border spinner-border-sm spanner-indicator"
+              id="spinnerProffQ"
+              role="status"
+              aria-hidden="true"
+            ></span>
+
+            <img
+              src="{% static 'assets/svgicon/add.svg' %}"
+              alt=""
+              class="add-btn-icon"
+            />
+          </button>
+        </h6>
+        <div id="proffQContainer">
+          {% for pQ in proffQs %}
+          {% include 'teacher/partials/proffQualification.html' %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if request.user|hasPerm:'staff.add_teacheraccadqualification' %}
+<div class="row">
+  <div class="col-md-12 stretch-card grid-margin grid-margin-md-0">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title d-flex justify-content-between">
+          Academic  Qualification
+          <button
+            type="button"
+            class="btn btn-outline-success btn-icon  mr-2"
+            hx-indicator="#spinnerAccadQ"
+            hx-swap="beforeend"
+            hx-target="#accadQContainer"
+            hx-get="{% url 'teacher:accadQ' %}"
+          >
+            <span
+              class="spinner-border spinner-border-sm spanner-indicator"
+              id="spinnerAccadQ"
+              role="status"
+              aria-hidden="true"
+            ></span>
+
+            <img
+              src="{% static 'assets/svgicon/add.svg' %}"
+              alt=""
+              class="add-btn-icon"
+            />
+          </button>
+        </h6>
+
+        <div id="accadQContainer">
+          {% for aQ in accadQs %}
+          {% include 'teacher/partials/accadQualification.html' %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+  
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/dropify.js' %}"></script>
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+
+  <script>
+
+
+    
+    function add_remove_addByClass() {
+      let imgs = Array.from(document.getElementsByClassName("add-btn-icon"));
+  
+      imgs.forEach((img) => {
+        img.addEventListener("mouseenter", () => {
+          img.src = `{% static 'assets/svgicon/add-white.svg' %}`;
+        });
+  
+        img.addEventListener("mouseout", () => {
+          img.src = `{% static 'assets/svgicon/add.svg' %}`;
+        });
+      });
+    }
+    add_remove_addByClass()
+  </script>

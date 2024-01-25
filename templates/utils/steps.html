@@ -1,0 +1,41 @@
+{% load project_Tags %}
+<section class="step-wizard" hx-target="#MDI">
+    <ul class="step-wizard-list">
+        {% for step in 6|make_list %}
+
+        <li class="step-wizard-item {% if step == current %} current-item {% endif %}">
+            <span class="progress-count">  
+                {{step}}
+               </span>
+            <span class="progress-label">
+                
+                {% if step == '1' %} 
+                    
+                       Teacher
+                   
+                {% elif step == '2' %}
+               
+               
+                     School Building
+                
+
+                {% elif step == '3' %}
+               
+                     Staff Avalibility
+                   
+                {% elif  step == '4' %}
+               
+                    Student Strength
+                
+                {% elif  step == '5' %}
+                PTC Information
+                {% else %}
+                    School Stock
+                {% endif %}
+                    
+            </span>
+        </li>
+     
+        {% endfor %}
+    </ul>
+</section>

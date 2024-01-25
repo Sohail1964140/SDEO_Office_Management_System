@@ -1,0 +1,775 @@
+{% load static %}
+{% load project_Tags %}
+<div
+  class="d-flex justify-content-between align-items-center flex-wrap grid-margin"
+>
+  <div>
+    <h4 class="mb-3 mb-md-0">
+      <i class="fa-light fa-loader"></i>Welcome to Dashboard
+    </h4>
+  </div>
+  <div class="d-flex align-items-center flex-wrap text-nowrap">
+    <button type="button" class="btn btn-outline-danger btn-icon-text mr-2 d-none d-md-block" hx-get="{% url 'entry:setting' %}" hx-push-url="{% url 'entry:setting' %}" hx-target="#MDI" hx-swap="innerHTML">
+      <i class="fa-solid fa-plus"></i>
+      Add Monthly Record
+    </button>
+    <button type="button" class="btn btn-outline-warning btn-icon-text mr-2 d-none d-md-block" hx-get="{% url 'entry:getFilterTemplate' %}" hx-push-url="{% url 'entry:getFilterTemplate' %}" hx-target="#MDI" hx-swap="innerHTML">
+      <i class="fa-regular fa-eye"></i>
+      View Monthly Record
+    </button>
+
+    <!-- Schools Reports -->
+    <div class="dropdown">
+      <button type="button" class="btn btn-outline-success btn-icon-text mr-2 mb-2 mb-md-0" id="schoolReports" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+        Schools Report
+      </button>
+      <div class="dropdown-menu" aria-labelledby="schoolReports">
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#schoolRoptions">List of all schools</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#customeSchoolReport">Custome Report</a>
+      </div>
+    </div>
+
+    <div class="dropdown ml-2">
+      <button type="button" class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0" id="teacherReports" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+        Teacher Reports
+      </button>
+
+      <div class="dropdown-menu" aria-labelledby="teacherReports">
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#allTeacher">List of Teachers for Local Govt Election Final</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#CustomeTeacherReport">Custome Report</a>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-xl-12 stretch-card">
+    <div class="row flex-grow">
+      <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-baseline">
+              <h6 class="card-title mb-2">Total UC's</h6>
+
+            </div>
+            <div class="row">
+              <div class="col-6 col-md-12 col-xl-5">
+                <h3 class="">{{ucs.count}}</h3>
+              </div>
+              <div class="col-6 col-md-12 col-xl-7">
+                <div class="mt-md-3 mt-xl-0 text-right pr-3">
+                  <a href="#"  hx-get="{% url 'core:ucAdd' %}" hx-push-url="{% url 'core:ucAdd' %}" hx-target="#MDI" hx-swap="innerHTML"><h3><i class="fa-solid fa-plus"></i></h3></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-baseline">
+              <h6 class="card-title mb-2">Total Schools</h6>
+              <div class="dropdown mb-2">
+                <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+                  <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#schoolRoptions"><i data-feather="download-cloud" class="icon-sm mr-2" ></i> <span class="">List of all school</span></a>
+                  <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#customeSchoolReport"><i data-feather="download-cloud" class="icon-sm mr-2" ></i> <span class="">Custome Report</span></a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 col-md-12 col-xl-5">
+                <h3 class=""> {{schools.count}}</h3>
+              </div>
+              <div class="col-6 col-md-12 col-xl-7">
+                <div class="mt-md-3 mt-xl-0 text-right pr-3">
+                  <a href="" hx-get="{% url 'school:schoolAdd' %}" hx-push-url="{% url 'school:schoolAdd' %}" hx-target="#MDI" hx-swap="innerHTML" ><h3><i class="fa-solid fa-plus"></i></h3></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-baseline">
+              <h6 class="card-title mb-2">Total Staff</h6>
+              <div class="dropdown mb-2">
+                <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+                  <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#allTeacher"><i data-feather="download-cloud" class="icon-sm mr-2"></i> <span class="">List of Teachers for Govt Election final</span></a>
+                  <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#CustomeTeacherReport"><i data-feather="download-cloud" class="icon-sm mr-2"></i> <span class="">Custome Report</span></a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 col-md-12 col-xl-5">
+                <h3 class="mb-0">{{teachers}}</h3>
+              </div>
+              <div class="col-6 col-md-12 col-xl-7">
+                <div class="mt-md-3 mt-xl-0 text-right pr-3">
+                  <a href="" hx-get="{% url 'teacher:teacherAdd' %}" hx-push-url="{% url 'teacher:teacherAdd' %}" hx-target="#MDI" hx-swap="innerHTML"><h3><i class="fa-solid fa-plus"></i></h3></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row position-relative">
+          <div class="col-lg-4 chat-aside border-lg-right">
+            <div class="aside-content">
+              <div class="aside-header">
+
+                <form class="search-form">
+                  <div class="input-group border rounded-sm">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text border-0 rounded-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search icon-md cursor-pointer"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                      </div>
+                    </div>
+                    <input type="search" name="emis"  hx-get="{% url 'searchSchool' %}" hx-trigger="change"  hx-target="#allSchool"   class="form-control  border-0 rounded-sm" id="searchForm" placeholder="Search here..." list="emisList">
+                  </div>
+                </form>
+              </div>
+              <div class="aside-body">
+                <ul class="nav nav-tabs mt-3" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">
+                      <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center">
+                        <p class="d-none d-sm-block">Not yet</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="calls-tab" data-toggle="tab" href="#calls" role="tab" aria-controls="calls" aria-selected="false">
+                      <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center">
+                        <p class="d-none d-sm-block">Added</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="true">
+                      <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center">
+                        <p class="d-none d-sm-block">All</p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content mt-3 ps ps--active-y">
+                  <div class="tab-pane fade" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                    <div>
+                      <p class="text-muted mb-1">Schools who not add Record for this month</p>
+                      <ul class="list-unstyled chat-list px-1">
+                        
+                        {% for school in schools %}
+                        {% if not school.pk|is_added %}
+                        <li class="chat-item pr-1">
+                          <a href="javascript:;" class="d-flex align-items-center">
+                            <figure class="mb-0 mr-2">
+                              {% if school.user.image %}
+                                <img src="{{school.user.image.url}}" class="img-xs rounded-circle" alt="user">
+                              {% else %}
+                              <img src="" class="img-xs rounded-circle" alt="user">
+                              {% endif %}
+
+                                <div class="status offline"></div>
+                              
+                            </figure>
+                            <div class="d-flex align-items-center justify-content-between flex-grow border-bottom">
+                              
+                              
+                                  <div>
+                                    <p class="text-body">{{school.name}}</p>
+                                    <div class="d-flex align-items-center">
+                                      <p class="text-muted tx-13">{{school.user.email}}</p>
+                                    </div>
+                                  </div>
+  
+                              
+                                
+  
+                            </div>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="calls" role="tabpanel" aria-labelledby="calls-tab">
+                    <p class="text-muted mb-1">Schools who add Record for this month</p>
+                    <ul class="list-unstyled chat-list px-1">
+                      
+                      {% for added in addeds %}
+                        <li class="chat-item pr-1">
+                          <a href="javascript:;" class="d-flex align-items-center">
+                            <figure class="mb-0 mr-2">
+                              {% if added.school.user.image %}
+                                <img src="{{added.school.user.image.url}}" class="img-xs rounded-circle" alt="user">
+                              {% else %}
+                              <img src="https://via.placeholder.com/37x37" class="img-xs rounded-circle" alt="user">
+                              {% endif %}
+                              <div class="status online"></div>
+                            </figure>
+                            <div class="d-flex align-items-center justify-content-between flex-grow border-bottom">
+                              <div>
+                                <p class="text-body">{{added.school.name}}</p>
+                                <div class="d-flex align-items-center">
+                                  <p class="text-muted tx-13">{{added.school.user.email}}</p>
+                                </div>
+                              </div>
+                             
+                            </div>
+                          </a>
+                        </li>
+                      {% endfor %}
+                        
+
+                    </ul>
+                  </div>
+                  <div class="tab-pane fade active show" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                    <p class="text-muted mb-1">All Schools</p>
+                    <ul class="list-unstyled chat-list px-1" id="allSchool">
+                      
+                      {% block allSchool %}
+
+                      {% for school in schools  %}
+                      <li class="chat-item pr-1">
+                        <a href="javascript:;" class="d-flex align-items-center">
+                          <figure class="mb-0 mr-2">
+                            {% if school.user.image %}
+                              <img src="{{school.user.image.url}}" class="img-xs rounded-circle" alt="user">
+                            {% else %}
+                            <img src="" class="img-xs rounded-circle" alt="user">
+                            {% endif %}
+                            {% if school.pk|is_added %}
+                              <div class="status online"></div>
+                            {% else %}
+                              <div class="status offline"></div>
+                            {% endif %}
+                          </figure>
+                          <div class="d-flex align-items-center justify-content-between flex-grow border-bottom">
+                            
+                            
+                                <div>
+                                  <p class="text-body">{{school.name}}</p>
+                                  <div class="d-flex align-items-center">
+                                    <p class="text-muted tx-13">{{school.user.email}}</p>
+                                  </div>
+                                </div>
+
+                            
+                              
+
+                          </div>
+                        </a>
+                      </li>
+                      {% endfor %}
+
+                      {% endblock allSchool %}
+
+                    </ul>
+                  </div>
+                <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 374px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 209px;"></div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 chat-content" id="map">
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% comment %} Model {% endcomment %}
+<!-- List of all School Option Model -->
+<div class="modal fade" id="schoolRoptions" tabindex="-1" role="dialog" aria-labelledby="schoolRoptions" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Format to download with</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:schoolAll' %}" method="get">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control" placeholder="Report name">
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="format" required>
+              <option value="" selected="" disabled="">Select Format</option >
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Cusotme School Reports -->
+<div class="modal fade" id="customeSchoolReport" tabindex="-1" role="dialog" aria-labelledby="customeSchoolReport" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-top" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customeSchoolReport">Custome Report about the schools</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:schoolAll' %}" method="get">
+          
+          <div class="form-group">
+            <label for="#circle" class="col-form-label">Circle</label>
+            <select hx-get="{% url 'teacher:getUcFromCircle' %}"  hx-target="#ucDD" hx-trigger="change" class="form-control" name="circleDD"  id="circle" required >
+              <option value=""  selected>----</option>
+              {% for circle in circles %}  
+                <option   value="{{circle.pk}}">{{circle.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="#uc" class="col-form-label">UC</label>
+            <select class="form-control" name="ucDD"  id="ucDD">
+              <option value=""  selected>----</option>
+              {% for uc in ucs %}  
+              <option value="{{uc.pk}}">{{uc.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <input type="text" name="custome" id="" hidden value="true">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control mb-2" placeholder="Report name">
+            <select class="form-control" name="format" id="format" required>
+              <option  value="" selected disabled>Select Format</option>
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Teachers Reporst -->
+
+<!-- Modal -->
+<div class="modal fade" id="allTeacher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">List of Teachers for Local Govt Election Final</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:govtElectionList' %}" method="get">
+          <div class="form-group">
+            <input type="text" name="filename" class="form-control" placeholder="Report name" required>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="format" required>
+              <option value="" selected="" disabled="">Select Format</option >
+              <option value="pdf">pdf</option>
+              <option value="csv">csv</option>
+              <option value="xls">xlsx</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Custome Teachers Reporst -->
+
+<!-- Modal -->
+<div class="modal fade modal fade bd-example-modal-lg" id="CustomeTeacherReport" tabindex="-1" role="dialog" aria-labelledby="CustomeTeacherReportLable" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="CustomeTeacherReportLable">Custome Report For Teachers</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'reports:teacherReport' %}" method="get">
+         
+          <div class="row">
+            <!-- Experience Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="experienceCB" id="experienceCB" value="YearOfExp">
+                      Year Of Experience 
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-3">
+                      <input type="number" name="year" class="form-control" max="50" id="year">
+                    </div>
+                    <div class="col-1">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="eq" value="eq">
+                          eq
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1  ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="gt" value="gt">
+                          gt
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1  ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="lt" value="lt">
+                          lt
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1 ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="gte" value="gte">
+                          gte
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                    <div class="col-1 ml-4">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="match" id="lte" value="lte">
+                          lte
+                        <i class="input-frame"></i></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Circle Filter -->
+          <div class="col-lg-6">
+            <div class="form-group">
+              <div class="col-lg-12">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="circleCB" id="circleCB" value="circleCB">
+                    Circle
+                  <i class="input-frame"></i></label>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <select class="select form-select" name="circle" id="circleDD2">
+                  <option value="" selected="">----------</option >
+                  
+                  {% for circle in circles %}
+
+                  <option value="{{circle.pk}}">{{circle}}</option>
+                    
+                  {% endfor %}
+                    
+                
+                </select>
+              </div>
+            </div>
+          </div>
+
+            <!-- UC Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="ucCB" id="ucCB" value="ucCB">
+                      UC
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select" name="uc" id="ucDD2">
+                    <option value="" selected="" >----------</option >
+                      {% for uc in ucs %}
+
+                      <option value="{{uc.pk}}">{{uc}}</option>
+                        
+                      {% endfor %}
+                        
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- School Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="schoolCB" id="schoolCB" value="schoolCB">
+                      School
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select form-control" name="school" id="schoolDD2">
+                    <option value="" selected="" >----------</option >
+                      {% for school in schools %}
+
+                      <option value="{{school.pk}}">{{school}}</option>
+                        
+                      {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Post Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="postCB" id="postCB" value="postCB">
+                      Post
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <select class="select form-select" name="post" id="postDD2">
+                    <option value="" selected="">----------</option >
+                      {% for post in posts %}
+
+                      <option value="{{post.pk}}">{{post}}</option>
+                        
+                      {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Sallery Filter -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" name="sallaryCB" id="sallaryCB" value="sallary">
+                      Sallery
+                    <i class="input-frame"></i></label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-6">
+                     <input type="text" name="fromSallery" id="fromSallery" class="form-control salary">
+                    </div>
+                    <div class="col-lg-6">
+                     <input type="text" name="toSallery" id="toSallery" class="form-control salary">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          <!-- Columns -->
+          <div class="col-lg-12">
+          <div class="form-group">
+            <div class="col-lg-12">
+              <label>Select Columns for Report</label>
+            </div>
+            <div class="col-lg-12">
+              <select class="mDD form-control" multiple name="columns[]">
+                <option value="school">School</option>
+                <option value="post">Designation</option>
+                <option value="personal_no">Personal Number</option>
+                <option value="name">Name</option>
+                <option value="fname">F/Name</option>
+                <option value="g_fund_no">GP fund No</option>
+                <option value="cnic">CNIC</option>
+                <option value="address">Address</option>
+                <option value="dob">DOB</option>
+                <option value="gender">Gender</option>
+                <option value="contact">Contact</option>
+                <option value="dateOfTakingOverChargeInPresentSchool">date Of Taking OverCharge In Present School</option>
+                <option value="Proffqualification">Proffissional Qualification</option>
+                <option value="Accadqualification">Accademic Qualification</option>
+                <option value="teacherFirstAppointment">Year of Recruitment</option>
+                <option value="dateOfTakingOverChargeOnPresentPost">date Of Taking OverCharge On Present Post</option>
+                <option value="district">District</option>
+                <option value="tehsil">Tehsil</option>
+                <option value="circle">Circle</option>
+                <option value="uc">UC</option>
+                <option value="emis">Emis Code</option>
+                <option value="level">Level</option>
+              </select>
+            </div>
+          </div>
+          </div>
+           
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+            <div class="form-group">
+             <div class="row">
+              <div class="col-lg-4">
+                <input type="text" name="filename" id="filename2" class="form-control" placeholder="Report Name" required>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="reportHeading" id="reportHeading" class="form-control" placeholder="Report Heading" required>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="reportSubHeading" id="reportSubHeading" class="form-control" placeholder="Sub Heading" required>
+              </div>
+             </div>
+            </div>
+          </div>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <select class="form-control" name="format" required>
+                  <option value="" selected="" disabled="">Select Format</option >
+                  <option value="pdf">pdf</option>
+                  <option value="csv">csv</option>
+                  <option value="xls">xlsx</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!--END-->
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Download</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<datalist id="emisList">
+  
+  {% for school in  schools %}
+
+  <option value="{{school.emis}}">
+    
+  {% endfor %}
+    
+</datalist>
+
+
+
+<script>
+  document.getElementById("experienceCB").addEventListener('change', (event)=>{
+    if(event.target.checked){
+
+      document.getElementById("year").setAttribute('required','');
+  }else{
+      document.getElementById("year").removeAttribute('required');
+  }
+})
+
+document.getElementById("circleCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("circleDD2").setAttribute('required','');
+}else{
+    document.getElementById("circleDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("ucCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("ucDD2").setAttribute('required','');
+}else{
+    document.getElementById("ucDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("schoolCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("schoolDD2").setAttribute('required','');
+}else{
+    document.getElementById("schoolDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("postCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    document.getElementById("postDD2").setAttribute('required','');
+}else{
+    document.getElementById("postDD2").removeAttribute('required');
+}
+})
+
+document.getElementById("sallaryCB").addEventListener('change', (event)=>{
+  if(event.target.checked){
+
+    for (input of document.getElementsByClassName("salary")){
+      input.setAttribute('required','')
+    }
+}else{
+  for (input of document.getElementsByClassName("salary")){
+    input.removeAttribute('required','')
+  }
+}
+})
+</script>

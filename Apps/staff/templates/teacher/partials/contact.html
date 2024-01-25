@@ -1,0 +1,45 @@
+{% load crispy_forms_tags %} {% load static %} 
+
+<form
+  action=""
+  method="post"
+  hx-target="this"
+  hx-post="{% url 'teacher:contactAdd' %}"
+>
+  {% if not isList %} {% csrf_token %}
+  <div class="form-group row">
+    <div class="col-md-6">{{contactForm.contact|as_crispy_field}}</div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <button type="submit" 
+      class="btn btn-sm btn-icon btn-outline-primary mr-2">
+     <strong>✔</strong>
+      </button>
+    
+      <button
+        type="button"
+        hx-delete="{% url 'teacher:deleteForm' %}"
+        class="btn btn-sm btn-icon btn-outline-danger mr-2"
+      >
+        <strong>X</strong>
+      </button>
+    </div>
+  </div>
+  {%else%}
+  <div class="form-group row">
+    <div class="col-md-6">{{contact.contact}}</div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <button
+        type="button"
+        hx-confirm="Are you sure you want to delete this {{contact.contact}} contact? This action cannot be undone "
+        hx-delete="{% url 'teacher:contactDelete' contact.id %}"
+        class="btn btn-sm btn-icon btn-outline-danger mr-2"
+      >
+      <strong>X</strong>
+        
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</form>
+{% include "utils/inputmask.html" %}
+{% include "utils/maxlen.html" %}

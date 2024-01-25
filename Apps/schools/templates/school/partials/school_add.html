@@ -1,0 +1,112 @@
+{% load static %} 
+{% load project_Tags %}
+{% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      {% if request.user.is_superuser %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+      {% endif %}
+
+      {% if request.user|hasPerm:'schools.view_school' %}
+        <li class="breadcrumb-item">
+        
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'school:schoolList' %}" hx-get="{% url 'school:schoolList' %}">School List</a>
+        
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">School Add</li>
+    </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="form-group row">
+            <div class="col-md-6">{{form.uc| as_crispy_field}}</div>
+            <div class="col-md-6">{{form.user| as_crispy_field}}</div>
+            <div class="col-md-12">{{form.name| as_crispy_field}}</div>
+            <div class="col-md-2">{{form.latitude| as_crispy_field}}</div>
+            <div class="col-md-2">{{form.langitude| as_crispy_field}}</div>
+            <div class="col-md-8"></div>
+            <div class="col-md-6">{{form.emis| as_crispy_field}}</div>
+            <div class="col-md-6">{{form.ddo| as_crispy_field}}</div>
+            <div class="col-md-12">
+              <label for="{{form.yearOfConstruction.id_for_label}}"
+                >{{form.yearOfConstruction.label}}</label
+              >
+              <div class="input-group date datepicker">
+                {{form.yearOfConstruction}}<span
+                  class="input-group-addon"
+                  ><i data-feather="calendar"></i
+                ></span>
+              </div>
+
+            </div>
+          </div>
+        {% if request.user|hasPerm:'schools.add_school' or request.user|hasPerm:'school.change_school' %}
+          <button
+            class="btn btn-outline-primary mr-2"
+            {% if not isUpdate %}
+              {% if request.user|hasPerm:'schools.add_school'  %}
+                  hx-post="{% url 'school:schoolAdd' %}"
+              {% endif %}
+            {% else %}
+              {% if request.user|hasPerm:'schools.change_school' %}
+                  hx-post="{{object.get_absolute_url}}"
+              {% endif %}
+            {% endif %}
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            
+            hx-indicator = "#spinner"
+          
+            >
+
+            <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          Save
+          </button>
+          {% endif %}
+          {% if request.user|hasPerm:'schools.view_school' %}
+          <button  class="btn btn-outline-danger"  hx-target="#MDI" hx-push-url="{% url 'school:schoolList' %}" hx-get="{% url 'school:schoolList' %}">Go Back</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+{% include "utils/inputmask.html" %}
+<script src="{% static 'assets/js/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+
+<script>
+  let latitudeTxt = document.getElementById("id_latitude");
+  let langitudeTxt = document.getElementById("id_langitude");
+  let emisTxt = document.getElementById("id_emis");
+  latitudeTxt.addEventListener('keypress', (event)=>{
+   if (latitudeTxt.value.length > 20){
+    latitudeTxt.value = latitudeTxt.value.slice(0,20)
+   }
+  });
+  langitudeTxt.addEventListener('keypress', (event)=>{
+    if (langitudeTxt.value.length > 20){
+      langitudeTxt.value = langitudeTxt.value.slice(0,20)
+    }
+   })
+
+
+   emisTxt.addEventListener('keypress', (event)=>{
+    if (emisTxt.value.length >= 13){
+      emisTxt.value = emisTxt.value.slice(0,13)
+    }
+   })
+</script>

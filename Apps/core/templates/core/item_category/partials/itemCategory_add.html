@@ -1,0 +1,73 @@
+{% load static %} 
+{% load project_Tags %}
+{% load crispy_forms_tags %}
+{% include "utils/message.html" %}
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        {% if request.user.is_superuser %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        {% endif %}
+
+        {% if request.user|hasPerm:'core.view_item_category' %}
+        <li class="breadcrumb-item">
+        
+          <a href="#" hx-target="#MDI"  hx-push-url="{% url 'core:itemCategoryList' %}" hx-get="{% url 'core:itemCategoryList' %}">Item Category List</a>
+        
+        </li>
+        {% endif %}
+
+
+        <li class="breadcrumb-item active" aria-current="page">Item Category Add</li>
+    </ol>
+</nav>
+
+<div class="row">
+
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{heading}}</h6>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <div class="form-group row">
+            <div class="col-md-6">{{form.name| as_crispy_field}}</div>
+          </div>
+          {% if request.user|hasPerm:'core.add_item_category' or request.user|hasPerm:'core.change_item_category' %}
+          <button
+            class="btn btn-outline-primary mr-2"
+            {% if not isUpdate %}
+                {% if request.user|hasPerm:'core.add_item_category' %}
+                  hx-post="{% url 'core:itemCategoryAdd' %}"
+                  {% endif %}
+            {% else %}
+                {% if request.user|hasPerm:'core.change_item_category' %}
+                    hx-post="{% url 'core:itemCategoryUpdate' object.name %}"
+                  {% endif %}
+            {% endif %}
+            hx-target="#MDI"
+            hx-swap="innerHTML"
+            hx-indicator = "#spinner">
+
+            <span class="spinner-border spinner-border-sm spanner-indicator" id="spinner" role="status" aria-hidden="true"></span>
+          
+         Save
+            
+
+            
+          </button>
+          {% endif %}
+
+          {% if request.user|hasPerm:'core.view_item_category' %}
+          <button  class="btn btn-outline-danger"  hx-target="#MDI" hx-push-url="{% url 'core:itemCategoryList' %}" hx-get="{% url 'core:itemCategoryList' %}">Go Back</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "utils/maxlen.html" %}
+

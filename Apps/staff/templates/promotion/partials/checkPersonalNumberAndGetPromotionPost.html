@@ -1,0 +1,14 @@
+{% load static %}
+<span class="text-{{type}}" id="personalError"  hx-swap-oob="true">
+    <span style="font-size:12px">{{msg}}</span>
+    <span class="spinner-grow spinner-grow-sm text-primary spanner-indicator" id="personalNoSpinner" role="status" aria-hidden="true"></span>
+</span>
+<select name="toPost" id="id_toPost" class=" select form-select" required   hx-swap-oob="true">
+    <option value="">--------</option>
+    {% for post in posts  %}
+        <option value="{{post.pk}}">{{post}}</option>
+    {% endfor %}
+</select>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+
+

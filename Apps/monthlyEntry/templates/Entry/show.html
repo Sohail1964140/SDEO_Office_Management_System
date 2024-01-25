@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'Entry/partials/show.html' %}
+{% endblock content %}
+
+{% block script %}
+{{ block.super }}
+<script>
+    var scrollbarExample = new PerfectScrollbar("#scroll");
+  </script>
+{% endblock script %}

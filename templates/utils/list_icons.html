@@ -1,0 +1,51 @@
+{% load static %}
+<script>
+  function add_remove_trash() {
+    let Trashelements = document.getElementsByClassName("trash");
+    let arr = Array.from(Trashelements);
+
+    arr.forEach((element) => {
+      element.addEventListener("mouseenter", () => {
+        element.src = `{% static 'assets/svgicon/trash-white.svg' %}`;
+      });
+
+      element.addEventListener("mouseout", () => {
+        element.src = `{% static 'assets/svgicon/trash.svg' %}`;
+      });
+    });
+  }
+
+  function add_remove_edit() {
+    let EditElements = document.getElementsByClassName("edit");
+    let arr = Array.from(EditElements);
+
+    arr.forEach((element) => {
+      element.addEventListener("mouseenter", () => {
+        element.src = `{% static 'assets/svgicon/edit-white.svg' %}`;
+      });
+
+      element.addEventListener("mouseout", () => {
+        element.src = `{% static 'assets/svgicon/edit.svg' %}`;
+      });
+    });
+  }
+
+
+
+  function add_remove_add() {
+    let img = document.getElementById("add-btn-icon");
+
+    img.addEventListener("mouseenter", () => {
+      img.src = `{% static 'assets/svgicon/add-white.svg' %}`;
+    });
+
+    img.addEventListener("mouseout", () => {
+      img.src = `{% static 'assets/svgicon/add.svg' %}`;
+    });
+  }
+
+
+  add_remove_add();
+  add_remove_trash();
+  add_remove_edit();
+</script>

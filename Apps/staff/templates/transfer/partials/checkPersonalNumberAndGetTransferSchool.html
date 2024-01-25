@@ -1,0 +1,14 @@
+{% load static %}
+<span class="text-{{type}}" id="personalError"  hx-swap-oob="true">
+    <span style="font-size:12px">{{msg}}</span>
+    <span class="spinner-grow spinner-grow-sm text-primary spanner-indicator" id="personalNoSpinner" role="status" aria-hidden="true"></span>
+</span>
+<select name="toSchool" id="id_toSchool" class="sDD select form-select"    hx-swap-oob="true">
+    <option value="">--------</option>
+    {% for school in schools  %}
+        <option value="{{school.pk}}">{{school}}</option>
+    {% endfor %}
+</select>
+<script src="{% static 'assets/js/select2.js' %}"></script>
+
+
